@@ -16,18 +16,22 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager
+package io.craigmiller160.financialmanager;
 
-import io.craigmiller160.webutils.tls.TlsConfigurer
-import org.springframework.boot.SpringApplication
-import org.springframework.boot.autoconfigure.SpringBootApplication
+import io.craigmiller160.webutils.tls.TlsConfigurer;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-class FinancialManagerApplication
-object FinancialManagerApplication extends App {
-    val TRUST_STORE_TYPE = "JKS"
-    val TRUST_STORE_PATH = "truststore.jks"
-    val TRUST_STORE_PASSWORD = "changeit"
-    TlsConfigurer.INSTANCE.configureTlsTrustStore(TRUST_STORE_PATH, TRUST_STORE_TYPE, TRUST_STORE_PASSWORD)
-    SpringApplication.run(classOf[FinancialManagerApplication])
+public class FinancialManagerApplication {
+
+    private static final String TRUST_STORE_TYPE = "JKS";
+    private static final String TRUST_STORE_PATH = "truststore.jks";
+    private static final String TRUST_STORE_PASSWORD = "changeit";
+
+    public static void main(final String[] args) {
+        TlsConfigurer.INSTANCE.configureTlsTrustStore(TRUST_STORE_PATH, TRUST_STORE_TYPE, TRUST_STORE_PASSWORD);
+        SpringApplication.run(FinancialManagerApplication.class);
+    }
+
 }
