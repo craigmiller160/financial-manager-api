@@ -21,10 +21,12 @@ package io.craigmiller160.financialmanager.csv.parser;
 import io.craigmiller160.financialmanager.csv.record.TransactionRecord;
 import io.craigmiller160.financialmanager.exception.CsvParsingException;
 import io.vavr.collection.List;
+import io.vavr.collection.Seq;
+import io.vavr.collection.Stream;
 import io.vavr.control.Try;
 
 public interface CsvParser {
 
-    Try<List<TransactionRecord>> parse(final String csv);
+    Try<Stream<TransactionRecord>> parse(final String csv);
 
 }

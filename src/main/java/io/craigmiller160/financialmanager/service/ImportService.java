@@ -35,14 +35,20 @@ public class ImportService {
 
     private final CsvParserFactory csvParserFactory;
     private final TransactionRepository transactionRepo;
+    private final SecurityService securityService;
 
     public Try<List<Transaction>> doImport(final CsvSource source, final String csv) {
-        // TODO need exception handling for invalid payloads
-        // TODO need the authenticated user id
+        final String userId = securityService.getAuthenticatedUser().getUsername();
         final CsvParser parser = getParser(source);
         return parser.parse(csv)
-                .map(list -> {
-                    final List<Transaction> entityList = list.map(TransactionRecord::toEntity);
+                .map(stream -> {
+                    final List<Transaction> entityList = stream
+                            .map(TransactionRecord::toEntity)
+                            .map(txn -> {
+                                txn.setUserId(userId);
+                                return txn;
+                            })
+                            .toList();
                     return List.ofAll(transactionRepo.saveAll(entityList));
                 });
     }
