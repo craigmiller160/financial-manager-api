@@ -11,7 +11,7 @@
     <groupId>io.craigmiller160</groupId>
     <artifactId>financial-manager</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>financial-manager</name>
+    <name>financial-manager-api</name>
     <description>Financial management application.</description>
 
     <properties>
