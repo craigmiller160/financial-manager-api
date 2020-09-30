@@ -49,11 +49,16 @@ public class ChaseCsvParserTest extends AbstractCsvParserTest {
         final String csv = loadCsv("chase.csv")
                 .getOrElseThrow(() -> new RuntimeException("Unable to load CSV file"));
 
-        final List<TransactionRecord> records = parser.parse(csv);
+        final List<TransactionRecord> records = parser.parse(csv).get();
         assertEquals(2, records.size());
 
         assertEquals(txnRecord1, records.get(0));
         assertEquals(txnRecord2, records.get(1));
+    }
+
+    @Test
+    public void test_parse_error() {
+        throw new RuntimeException();
     }
 
 }

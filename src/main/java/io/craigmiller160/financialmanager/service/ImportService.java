@@ -39,10 +39,10 @@ public class ImportService {
         // TODO need exception handling for invalid payloads
         // TODO need the authenticated user id
         final CsvParser parser = getParser(source);
-        final List<Transaction> records = parser.parse(csv)
-                .map(TransactionRecord::toEntity);
-
-        transactionRepo.saveAll(records);
+//        final List<Transaction> records = parser.parse(csv)
+//                .map(TransactionRecord::toEntity);
+//
+//        transactionRepo.saveAll(records);
     }
 
     private CsvParser getParser(final CsvSource source) {

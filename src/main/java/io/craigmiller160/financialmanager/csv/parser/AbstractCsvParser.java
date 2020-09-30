@@ -20,23 +20,30 @@ package io.craigmiller160.financialmanager.csv.parser;
 
 import io.craigmiller160.financialmanager.csv.record.BaseRecord;
 import io.craigmiller160.financialmanager.csv.record.TransactionRecord;
+import io.craigmiller160.financialmanager.exception.CsvParsingException;
 import io.vavr.collection.Array;
 import io.vavr.collection.List;
+import io.vavr.collection.Seq;
+import io.vavr.control.Try;
 
 public abstract class AbstractCsvParser<R extends BaseRecord> implements CsvParser {
 
-    protected abstract R createRecord(final String rawRecord);
+    protected abstract Try<R> createRecord(final String rawRecord);
 
     protected abstract boolean acceptRecord(final R record);
 
-    public List<TransactionRecord> parse(final String csv) {
-        return Array.of(csv.split("\n"))
+    public Try<List<TransactionRecord>> parse(final String csv) {
+        final Seq<Try<R>> records = Array.of(csv.split("\n"))
                 .toStream()
                 .subSequence(1)
-                .map(this::createRecord)
-                .filter(this::acceptRecord)
-                .map(BaseRecord::toTransactionRecord)
-                .toList();
+                .map(this::createRecord);
+        return Try.of(() ->
+            records.map(Try::get)
+                    .filter(this::acceptRecord)
+                    .map(BaseRecord::toTransactionRecord)
+                    .toList()
+        )
+                .recoverWith(ex -> Try.failure(new CsvParsingException("Error parsing CSV", ex)));
     }
 
 }

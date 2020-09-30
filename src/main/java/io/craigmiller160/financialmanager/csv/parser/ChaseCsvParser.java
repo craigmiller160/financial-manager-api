@@ -20,13 +20,14 @@ package io.craigmiller160.financialmanager.csv.parser;
 
 import io.craigmiller160.financialmanager.csv.record.ChaseRecord;
 import io.craigmiller160.financialmanager.csv.record.RecordFactory;
+import io.vavr.control.Try;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ChaseCsvParser extends AbstractCsvParser<ChaseRecord> {
     @Override
-    protected ChaseRecord createRecord(final String rawRecord) {
-        return RecordFactory.chaseRecord(rawRecord);
+    protected Try<ChaseRecord> createRecord(final String rawRecord) {
+        return Try.of(() -> RecordFactory.chaseRecord(rawRecord));
     }
 
     @Override

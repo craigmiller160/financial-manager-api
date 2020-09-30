@@ -20,13 +20,14 @@ package io.craigmiller160.financialmanager.csv.parser;
 
 import io.craigmiller160.financialmanager.csv.record.DiscoverRecord;
 import io.craigmiller160.financialmanager.csv.record.RecordFactory;
+import io.vavr.control.Try;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DiscoverCsvParser extends AbstractCsvParser<DiscoverRecord> {
     @Override
-    protected DiscoverRecord createRecord(final String rawRecord) {
-        return RecordFactory.discoverRecord(rawRecord);
+    protected Try<DiscoverRecord> createRecord(final String rawRecord) {
+        return Try.of(() -> RecordFactory.discoverRecord(rawRecord));
     }
 
     @Override
