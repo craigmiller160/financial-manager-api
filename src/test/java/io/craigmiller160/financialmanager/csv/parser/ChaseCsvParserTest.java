@@ -19,6 +19,7 @@
 package io.craigmiller160.financialmanager.csv.parser;
 
 import io.craigmiller160.financialmanager.csv.record.ChaseRecord;
+import io.craigmiller160.financialmanager.csv.record.TransactionRecord;
 import io.vavr.collection.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,6 +52,16 @@ public class ChaseCsvParserTest extends AbstractCsvParserTest {
             80.30,
             2
     );
+    private final TransactionRecord txnRecord1 = new TransactionRecord(
+            LocalDate.of(2020, 9, 28),
+            "Something or Other",
+            -51.83
+    );
+    private final TransactionRecord txnRecord2 = new TransactionRecord(
+            LocalDate.of(2020, 9, 27),
+            "Different Thing",
+            -86.83
+    );
 
     @Test
     public void test_parse() {
@@ -61,6 +72,9 @@ public class ChaseCsvParserTest extends AbstractCsvParserTest {
         assertEquals(2, records.size());
         assertEquals(record1, records.get(0));
         assertEquals(record2, records.get(1));
+
+        assertEquals(txnRecord1, records.get(0).toTransactionRecord());
+        assertEquals(txnRecord2, records.get(1).toTransactionRecord());
     }
 
 }
