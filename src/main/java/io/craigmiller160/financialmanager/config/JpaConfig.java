@@ -16,13 +16,19 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.config
+package io.craigmiller160.financialmanager.config;
 
-import org.springframework.context.annotation.{ComponentScan, Configuration}
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@ComponentScan(basePackages = Array(
-    "io.craigmiller160.webutils.controller",
-    "io.craigmiller160.webutils.security"
-))
-class WebUtilsConfig
+@EnableJpaRepositories(basePackages = {
+        "io.craigmiller160.financialmanager.jpa.repository",
+        "io.craigmiller160.oauth2.repository"
+})
+@EntityScan(basePackages = {
+        "io.craigmiller160.financialmanager.jpa.entity",
+        "io.craigmiller160.oauth2.entity"
+})
+public class JpaConfig { }

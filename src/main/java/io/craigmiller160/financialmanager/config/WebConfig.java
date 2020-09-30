@@ -16,19 +16,26 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.config
+package io.craigmiller160.financialmanager.config;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.context.annotation.Configuration
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import io.craigmiller160.webutils.controller.RequestLogger;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@EnableJpaRepositories(basePackages = Array(
-  "io.craigmiller160.financialmanager.jpa.repository",
-  "io.craigmiller160.oauth2.repository"
-))
-@EntityScan(basePackages = Array(
-  "io.craigmiller160.financialmanager.jpa.entity",
-  "io.craigmiller160.oauth2.entity"
-))
-class JpaConfig
+public class WebConfig implements WebMvcConfigurer {
+
+    private final RequestLogger requestLogger;
+
+    public WebConfig(final RequestLogger requestLogger) {
+        this.requestLogger = requestLogger;
+    }
+
+    @Override
+    public void addInterceptors(final InterceptorRegistry registry) {
+        registry.addInterceptor(requestLogger)
+                .addPathPatterns("/**/**");
+    }
+
+}

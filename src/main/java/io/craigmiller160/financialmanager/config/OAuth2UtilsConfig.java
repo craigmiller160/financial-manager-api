@@ -16,10 +16,13 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.config
+package io.craigmiller160.financialmanager.config;
 
-import org.springframework.context.annotation.{ComponentScan, Configuration}
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackages = Array("io.craigmiller160.oauth2"))
-class OAuth2Utils
+@ComponentScan(basePackages = {
+        "io.craigmiller160.oauth2"
+})
+public class OAuth2UtilsConfig { }

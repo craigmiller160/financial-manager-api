@@ -16,16 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.config
+package io.craigmiller160.financialmanager.config;
 
-import io.craigmiller160.webutils.controller.RequestLogger
-import org.springframework.context.annotation.Configuration
-import org.springframework.web.servlet.config.annotation.{InterceptorRegistry, WebMvcConfigurer}
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
-class WebConfig (requestLogger: RequestLogger) extends WebMvcConfigurer {
-    override def addInterceptors(registry: InterceptorRegistry): Unit = {
-        registry.addInterceptor(requestLogger)
-            .addPathPatterns("/**/**")
-    }
-}
+@ComponentScan(basePackages = {
+        "io.craigmiller160.webutils.controller",
+        "io.craigmiller160.webutils.security"
+})
+public class WebUtilsConfig { }
