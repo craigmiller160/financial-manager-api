@@ -16,19 +16,27 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.csv.record
+package io.craigmiller160.financialmanager.csv.record;
 
-import java.time.LocalDate
+import java.time.LocalDate;
 
-case class ChaseRecord(
-    details: String,
-    postingDate: LocalDate,
-    description: String,
-    amount: Double,
-    txnType: String,
-    balance: Double,
-    checkOrSlipNumber: Int
-) extends BaseRecord {
-    override def toTransactionRecord: TransactionRecord =
-        TransactionRecord(postingDate, description, amount)
+public record ChaseRecord (
+        String details,
+        LocalDate postingDate,
+        String description,
+        double amount,
+        String type,
+        double balance,
+        int checkOrSlipNumber
+) implements BaseRecord {
+
+    @Override
+    public TransactionRecord toTransactionRecord() {
+        return new TransactionRecord(
+                postingDate,
+                description,
+                amount
+        );
+    }
+
 }

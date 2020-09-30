@@ -16,8 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.csv.record
+package io.craigmiller160.financialmanager.csv.record;
 
-trait BaseRecord {
-    def toTransactionRecord: TransactionRecord
+public interface BaseRecord {
+
+    TransactionRecord toTransactionRecord();
+
 }

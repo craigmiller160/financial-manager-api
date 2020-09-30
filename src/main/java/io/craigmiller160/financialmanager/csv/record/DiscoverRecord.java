@@ -16,12 +16,25 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.csv.record
+package io.craigmiller160.financialmanager.csv.record;
 
-import java.time.LocalDate
+import java.time.LocalDate;
 
-case class TransactionRecord(
-    postDate: LocalDate,
-    description: String,
-    amount: Double
-)
+public record DiscoverRecord(
+        LocalDate transDate,
+        LocalDate postDate,
+        String description,
+        double amount,
+        String category
+) implements BaseRecord {
+
+
+    @Override
+    public TransactionRecord toTransactionRecord() {
+        return new TransactionRecord(
+                postDate,
+                description,
+                amount
+        );
+    }
+}
