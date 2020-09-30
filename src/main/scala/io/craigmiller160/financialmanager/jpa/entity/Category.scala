@@ -16,11 +16,15 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.repository
+package io.craigmiller160.financialmanager.jpa.entity
 
-import io.craigmiller160.financialmanager.entity.Category
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.stereotype.Repository
+import javax.persistence.{Entity, GeneratedValue, GenerationType, Id, Table}
 
-@Repository
-trait CategoryRepository extends JpaRepository[Category,Long] { }
+@Entity
+@Table(name = "categories")
+case class Category(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    id: Long,
+    name: String
+)

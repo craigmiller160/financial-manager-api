@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.entity
+package io.craigmiller160.financialmanager.jpa.entity
 
 import java.time.LocalDate
 
