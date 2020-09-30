@@ -16,22 +16,6 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-CREATE SEQUENCE groups_id_seq START 1;
-CREATE TABLE groups (
-    id BIGINT NOT NULL DEFAULT nextval('groups_id_seq'::regclass),
-    name VARCHAR(255) NOT NULL,
-    CONSTRAINT groups_id_pk PRIMARY KEY (id)
-);
-
-CREATE SEQUENCE user_groups_id START 1;
-CREATE TABLE user_groups (
-    id BIGINT NOT NULL DEFAULT nextval('user_groups_id'::regclass),
-    user_email VARCHAR(255) NOT NULL,
-    group_id INT NOT NULL,
-    CONSTRAINT user_groups_id_pk PRIMARY KEY (id),
-    CONSTRAINT user_groups_group_id_fk FOREIGN KEY (group_id) REFERENCES groups (id)
-);
-
 CREATE SEQUENCE categories_id_seq START 1;
 CREATE TABLE categories (
     id BIGINT NOT NULL DEFAULT nextval('categories_id_seq'::regclass),
@@ -46,8 +30,8 @@ CREATE TABLE transactions (
     description VARCHAR(255),
     amount DECIMAL,
     post_date DATE,
-    group_id BIGINT NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
     CONSTRAINT transactions_id_pk PRIMARY KEY (id),
-    CONSTRAINT category_id_fk FOREIGN KEY (category_id) REFERENCES categories (id),
-    CONSTRAINT transactions_group_id_fk FOREIGN KEY (group_id) REFERENCES groups (id)
+    CONSTRAINT category_id_fk FOREIGN KEY (category_id) REFERENCES categories (id)
 );
+CREATE INDEX transactions_user_id_index ON transactions (user_id);
