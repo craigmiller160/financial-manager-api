@@ -26,4 +26,9 @@ public class DiscoverCsvParser extends AbstractCsvParser<DiscoverRecord> {
     protected DiscoverRecord createRecord(final String rawRecord) {
         return RecordFactory.discoverRecord(rawRecord);
     }
+
+    @Override
+    protected boolean acceptRecord(DiscoverRecord record) {
+        return true;
+    }
 }

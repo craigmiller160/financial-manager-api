@@ -18,17 +18,24 @@
 
 package io.craigmiller160.financialmanager.csv.parser;
 
+import io.craigmiller160.financialmanager.csv.record.BaseRecord;
+import io.craigmiller160.financialmanager.csv.record.TransactionRecord;
 import io.vavr.collection.Array;
 import io.vavr.collection.List;
 
-public abstract class AbstractCsvParser<R> {
+public abstract class AbstractCsvParser<R extends BaseRecord> {
 
     protected abstract R createRecord(final String rawRecord);
 
-    public List<R> parse(final String csv) {
+    protected abstract boolean acceptRecord(final R record);
+
+    public List<TransactionRecord> parse(final String csv) {
         return Array.of(csv.split("\n"))
+                .toStream()
                 .subSequence(1)
                 .map(this::createRecord)
+                .filter(this::acceptRecord)
+                .map(BaseRecord::toTransactionRecord)
                 .toList();
     }
 

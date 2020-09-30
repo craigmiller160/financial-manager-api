@@ -23,7 +23,12 @@ import io.craigmiller160.financialmanager.csv.record.RecordFactory;
 
 public class ChaseCsvParser extends AbstractCsvParser<ChaseRecord> {
     @Override
-    public ChaseRecord createRecord(final String rawRecord) {
+    protected ChaseRecord createRecord(final String rawRecord) {
         return RecordFactory.chaseRecord(rawRecord);
+    }
+
+    @Override
+    protected boolean acceptRecord(final ChaseRecord record) {
+        return !"CREDIT".equals(record.details());
     }
 }
