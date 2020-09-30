@@ -35,7 +35,7 @@ public record ChaseRecord (
         return new TransactionRecord(
                 postingDate,
                 description,
-                amount
+                amount * -1
         );
     }
 
