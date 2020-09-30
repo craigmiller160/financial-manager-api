@@ -22,6 +22,7 @@
         <web.utils.version>1.0.0</web.utils.version>
         <oauth2.utils.version>1.2.0</oauth2.utils.version>
         <postgres.version>42.2.9</postgres.version>
+        <h2.version>1.4.200</h2.version>
     </properties>
 
     <dependencies>
@@ -55,6 +56,12 @@
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest_${scala.lib.version}</artifactId>
             <version>${scala.test.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
