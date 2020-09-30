@@ -93,9 +93,7 @@ public class ImportControllerIntegrationTest {
             setupConfig.auth(authConfig -> {
                 authConfig.setType(AuthType.BEARER);
                 authConfig.setBearerToken(token);
-                return null;
             });
-            return null;
         });
 
         transactionRepo.deleteAll();
@@ -118,11 +116,9 @@ public class ImportControllerIntegrationTest {
                 reqConfig.setMethod(HttpMethod.POST);
                 reqConfig.setPath("/import/CHASE");
                 reqConfig.setBody(new Text(csv));
-                return null;
             });
             apiConfig.response(resConfig -> {
                 resConfig.setStatus(204);
-                return null;
             });
             return null;
         });
