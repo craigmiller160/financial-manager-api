@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    host: localhost
+    port: 30001
+    username: user
+    password: password
+
+oauth2:
+  auth-server-host: https://localhost:7003
+  client-key:
+  client-secret:
+
+logging:
+  level:
+    io.craigmiller160.authmanagementservice: DEBUG
+    io.craigmiller160.webutils: DEBUG
+    io.craigmiller160.oauth2: DEBUG

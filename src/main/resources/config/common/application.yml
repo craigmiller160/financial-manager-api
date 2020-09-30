@@ -1,0 +1,18 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+  datasource:
+    url: jdbc:postgresql://${spring.datasource.host}:${spring.datasource.port}/financial_manager
+
+oauth2:
+  auth-login-base-uri: "/oauth2"
+  auth-code-redirect-uri: "/api/oauth/authcode/code"
+  post-auth-redirect: "/"
+  client-name: financial-manager
+  cookie-name: financial-manager-token
+  cookie-max-age-secs: 86400
+
+logging:
+  level:
+    root: INFO

@@ -17,6 +17,9 @@
     <properties>
         <java.version>15</java.version>
         <scala.version>2.13.3</scala.version>
+        <web.utils.version>1.0.0</web.utils.version>
+        <oauth2.utils.version>1.2.0</oauth2.utils.version>
+        <postgres.version>42.2.9</postgres.version>
     </properties>
 
     <dependencies>
@@ -46,7 +49,21 @@
             <artifactId>scala-compiler</artifactId>
             <version>${scala.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>io.craigmiller160</groupId>
+            <artifactId>web-utils</artifactId>
+            <version>${web.utils.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.craigmiller160</groupId>
+            <artifactId>oauth2-utils</artifactId>
+            <version>${oauth2.utils.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgres.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
