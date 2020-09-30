@@ -28,6 +28,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
@@ -39,8 +40,11 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
+    @NotNull
     private Double amount;
+    @NotNull
     private LocalDate postDate;
+    @NotNull
     private String userId;
     private Long categoryId;
 

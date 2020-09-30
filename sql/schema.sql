@@ -28,8 +28,8 @@ CREATE TABLE transactions (
     id BIGINT NOT NULL DEFAULT nextval('transactions_id_seq'::regclass),
     category_id BIGINT,
     description VARCHAR(255),
-    amount DECIMAL,
-    post_date DATE,
+    amount DECIMAL NOT NULL,
+    post_date DATE NOT NULL,
     user_id VARCHAR(255) NOT NULL,
     CONSTRAINT transactions_id_pk PRIMARY KEY (id),
     CONSTRAINT category_id_fk FOREIGN KEY (category_id) REFERENCES categories (id)
