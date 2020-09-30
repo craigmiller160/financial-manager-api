@@ -23,6 +23,7 @@
         <oauth2.utils.version>1.2.0</oauth2.utils.version>
         <postgres.version>42.2.9</postgres.version>
         <h2.version>1.4.200</h2.version>
+        <vavr.version>0.10.3</vavr.version>
     </properties>
 
     <dependencies>
@@ -98,6 +99,11 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>${vavr.version}</version>
         </dependency>
     </dependencies>
 

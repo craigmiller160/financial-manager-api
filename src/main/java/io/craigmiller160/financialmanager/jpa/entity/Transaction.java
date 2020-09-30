@@ -16,16 +16,28 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.jpa.entity
+package io.craigmiller160.financialmanager.jpa.entity;
 
-import javax.persistence.{Entity, GenerationType, Table}
-import io.craigmiller160.financialmanager.jpa.ScalaJpaAnnotations.{Id,GeneratedValue}
+import lombok.Data;
 
+import javax.persistence.*;
+import java.time.LocalDate;
+
+@Data
 @Entity
-@Table(name = "categories")
-case class Category(
+@Table(name = "transactions")
+@SuppressWarnings("JpaDataSourceORMInspection")
+public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    id: Long,
-    name: String
-)
+    private Long id;
+    private String description;
+    private Double amount;
+    private LocalDate postDate;
+    private String userId;
+    private Long categoryId;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id", insertable = false, updatable = false)
+    private Category category;
+}
