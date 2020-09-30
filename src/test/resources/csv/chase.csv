@@ -1,3 +1,4 @@
 Details,Posting Date,Description,Amount,Type,Balance,Check or Slip #
 DEBIT,09/28/2020,Something or Other,-51.83,MISC_DEBIT,100.20,1
 DEBIT,09/27/2020,Different Thing,-86.83,ACH_DEBIT,80.30,2
+CREDIT,09/27/2020,Payday,20.00,DEPOSIT,60.30,3
