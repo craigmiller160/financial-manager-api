@@ -33,7 +33,7 @@ public record DiscoverRecord(
     public TransactionRecord toTransactionRecord() {
         return new TransactionRecord(
                 postDate,
-                description,
+                description.replaceAll("\"", ""),
                 amount
         );
     }
