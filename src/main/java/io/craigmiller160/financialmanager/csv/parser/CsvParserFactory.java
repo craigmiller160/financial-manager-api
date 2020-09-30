@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 @Getter
 @AllArgsConstructor
 @Component
-public class ParserFactory {
+public class CsvParserFactory {
 
     private final CsvParser chaseCsvParser;
     private final CsvParser discoverCsvParser;

@@ -18,10 +18,22 @@
 
 package io.craigmiller160.financialmanager.csv.record;
 
+import io.craigmiller160.financialmanager.jpa.entity.Transaction;
+
 import java.time.LocalDate;
 
 public record TransactionRecord (
         LocalDate postDate,
         String description,
         double amount
-) {}
+) {
+
+    public Transaction toEntity() {
+        final Transaction transaction = new Transaction();
+        transaction.setDescription(description);
+        transaction.setPostDate(postDate);
+        transaction.setAmount(amount);
+        return transaction;
+    }
+
+}

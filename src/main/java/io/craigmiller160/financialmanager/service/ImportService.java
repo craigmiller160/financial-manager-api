@@ -19,14 +19,37 @@
 package io.craigmiller160.financialmanager.service;
 
 import io.craigmiller160.financialmanager.csv.CsvSource;
+import io.craigmiller160.financialmanager.csv.parser.CsvParser;
+import io.craigmiller160.financialmanager.csv.parser.CsvParserFactory;
+import io.craigmiller160.financialmanager.csv.record.TransactionRecord;
 import io.craigmiller160.financialmanager.jpa.entity.Transaction;
+import io.craigmiller160.financialmanager.jpa.repository.TransactionRepository;
+import io.vavr.collection.List;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@AllArgsConstructor
 @Service
 public class ImportService {
 
-    public void doImport(final CsvSource source, final String csv) {
+    private final CsvParserFactory csvParserFactory;
+    private final TransactionRepository transactionRepo;
 
+    public void doImport(final CsvSource source, final String csv) {
+        // TODO need exception handling for invalid payloads
+        // TODO need the authenticated user id
+        final CsvParser parser = getParser(source);
+        final List<Transaction> records = parser.parse(csv)
+                .map(TransactionRecord::toEntity);
+
+        transactionRepo.saveAll(records);
+    }
+
+    private CsvParser getParser(final CsvSource source) {
+        return switch (source) {
+            case CHASE -> csvParserFactory.getChaseCsvParser();
+            case DISCOVER -> csvParserFactory.getDiscoverCsvParser();
+        };
     }
 
 }
