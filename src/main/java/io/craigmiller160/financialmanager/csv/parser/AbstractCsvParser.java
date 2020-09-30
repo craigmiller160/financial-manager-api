@@ -16,16 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.csv.parser
+package io.craigmiller160.financialmanager.csv.parser;
 
-import scala.reflect.ClassTag
+import io.vavr.collection.Array;
+import io.vavr.collection.List;
 
-abstract class AbstractCsvParser[R](implicit tag: ClassTag[R]) {
-    protected def createRecord(rawRecord: String): R
+public abstract class AbstractCsvParser<R> {
 
-    def parse(csv: String): List[R] =
-        csv.split("\n")
-            .drop(1)
-            .map { record => createRecord(record) }
-            .toList
+    protected abstract R createRecord(final String rawRecord);
+
+    public List<R> parse(final String csv) {
+        return Array.of(csv.split("\n"))
+                .subSequence(1)
+                .map(this::createRecord)
+                .toList();
+    }
+
 }

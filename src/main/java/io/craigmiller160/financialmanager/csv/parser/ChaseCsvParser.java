@@ -16,11 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.csv.parser
+package io.craigmiller160.financialmanager.csv.parser;
 
-import io.craigmiller160.financialmanager.csv.record.{DiscoverRecord, RecordFactory}
+import io.craigmiller160.financialmanager.csv.record.ChaseRecord;
+import io.craigmiller160.financialmanager.csv.record.RecordFactory;
 
-class DiscoverCsvParser extends AbstractCsvParser[DiscoverRecord] {
-    override protected def createRecord(rawRecord: String): DiscoverRecord =
-        RecordFactory.discoverRecord(rawRecord)
+public class ChaseCsvParser extends AbstractCsvParser<ChaseRecord> {
+    @Override
+    public ChaseRecord createRecord(final String rawRecord) {
+        return RecordFactory.chaseRecord(rawRecord);
+    }
 }
