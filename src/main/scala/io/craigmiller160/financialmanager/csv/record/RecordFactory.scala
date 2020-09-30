@@ -32,9 +32,9 @@ object RecordFactory {
         val amount = fields(3).trim.toDouble
         val txnType = fields(4).trim
         val balance = if(!fields(5).trim.isBlank) fields(5).trim.toDouble else 0
-        val checkOrSlipNumber = if(!fields(6).trim.isBlank) fields(6).trim.toDouble else 0
+        val checkOrSlipNumber = if(!fields(6).trim.isBlank) fields(6).trim.toInt else 0
 
-        new ChaseRecord(
+        ChaseRecord(
             details,
             postingDate,
             description,
@@ -50,10 +50,10 @@ object RecordFactory {
         val transDate = LocalDate.parse(fields(0).trim, SLASH_DATE_FORMAT)
         val postDate = LocalDate.parse(fields(1).trim, SLASH_DATE_FORMAT)
         val description = fields(2).trim
-        val amount = fields(3).trim
+        val amount = fields(3).trim.toDouble
         val category = fields(4).trim
 
-        new DiscoverRecord(
+        DiscoverRecord(
             transDate,
             postDate,
             description,

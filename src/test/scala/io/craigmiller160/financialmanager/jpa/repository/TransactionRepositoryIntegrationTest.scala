@@ -16,25 +16,16 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.jpa.entity
+package io.craigmiller160.financialmanager.jpa.repository
 
-import java.time.LocalDate
+import org.junit.jupiter.api.`extension`.ExtendWith
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.test.context.junit.jupiter.SpringExtension
 
-import javax.persistence.{Entity, FetchType, GeneratedValue, GenerationType, Id, JoinColumn, ManyToOne, Table}
+@DataJpaTest
+@ExtendWith(classOf[SpringExtension])
+class TransactionRepositoryIntegrationTest extends AnyWordSpec {
 
-@Entity
-@Table(name = "transactions")
-case class Transaction (
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    id: Long,
-    description: String,
-    amount: Double,
-    postDate: LocalDate,
-    userId: String,
-    categoryId: Option[Long] = None,
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id")
-    category: Option[Category] = None
-)
+
+}

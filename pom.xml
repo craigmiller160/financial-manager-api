@@ -17,6 +17,8 @@
     <properties>
         <java.version>15</java.version>
         <scala.version>2.13.3</scala.version>
+        <scala.lib.version>2.13</scala.lib.version>
+        <scala.test.version>3.2.2</scala.test.version>
         <web.utils.version>1.0.0</web.utils.version>
         <oauth2.utils.version>1.2.0</oauth2.utils.version>
         <postgres.version>42.2.9</postgres.version>
@@ -48,6 +50,12 @@
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-compiler</artifactId>
             <version>${scala.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_${scala.lib.version}</artifactId>
+            <version>${scala.test.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.craigmiller160</groupId>
