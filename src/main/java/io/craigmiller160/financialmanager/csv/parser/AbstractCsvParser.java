@@ -23,7 +23,7 @@ import io.craigmiller160.financialmanager.csv.record.TransactionRecord;
 import io.vavr.collection.Array;
 import io.vavr.collection.List;
 
-public abstract class AbstractCsvParser<R extends BaseRecord> {
+public abstract class AbstractCsvParser<R extends BaseRecord> implements CsvParser {
 
     protected abstract R createRecord(final String rawRecord);
 

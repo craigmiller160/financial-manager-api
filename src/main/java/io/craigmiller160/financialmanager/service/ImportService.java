@@ -19,6 +19,7 @@
 package io.craigmiller160.financialmanager.service;
 
 import io.craigmiller160.financialmanager.csv.CsvSource;
+import io.craigmiller160.financialmanager.jpa.entity.Transaction;
 import org.springframework.stereotype.Service;
 
 @Service

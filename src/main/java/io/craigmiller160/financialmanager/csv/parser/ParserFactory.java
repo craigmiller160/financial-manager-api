@@ -18,19 +18,16 @@
 
 package io.craigmiller160.financialmanager.csv.parser;
 
-import io.craigmiller160.financialmanager.csv.record.DiscoverRecord;
-import io.craigmiller160.financialmanager.csv.record.RecordFactory;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
+@Getter
+@AllArgsConstructor
 @Component
-public class DiscoverCsvParser extends AbstractCsvParser<DiscoverRecord> {
-    @Override
-    protected DiscoverRecord createRecord(final String rawRecord) {
-        return RecordFactory.discoverRecord(rawRecord);
-    }
+public class ParserFactory {
 
-    @Override
-    protected boolean acceptRecord(DiscoverRecord record) {
-        return true;
-    }
+    private final CsvParser chaseCsvParser;
+    private final CsvParser discoverCsvParser;
+
 }
