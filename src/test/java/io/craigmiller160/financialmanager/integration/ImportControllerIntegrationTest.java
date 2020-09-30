@@ -120,7 +120,6 @@ public class ImportControllerIntegrationTest {
             apiConfig.response(resConfig -> {
                 resConfig.setStatus(204);
             });
-            return null;
         });
 
         final var allTxns = List.ofAll(transactionRepo.findAll());
