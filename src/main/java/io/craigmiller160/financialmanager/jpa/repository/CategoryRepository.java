@@ -16,14 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.jpa
+package io.craigmiller160.financialmanager.jpa.repository;
 
-import scala.annotation.meta.field
+import io.craigmiller160.financialmanager.jpa.entity.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-object ScalaJpaAnnotations {
-    type Id = javax.persistence.Id@field
-    type GeneratedValue = javax.persistence.GeneratedValue@field
-    type Column = javax.persistence.Column@field
-    type ManyToOne = javax.persistence.ManyToOne@field
-    type JoinColumn = javax.persistence.JoinColumn@field
-}
+@Repository
+public interface CategoryRepository extends JpaRepository<Category,Long> { }

@@ -16,11 +16,11 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.jpa.repository
+package io.craigmiller160.financialmanager.jpa.repository;
 
-import io.craigmiller160.financialmanager.jpa.entity.Transaction
-import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.stereotype.Repository
+import io.craigmiller160.financialmanager.jpa.entity.Transaction;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 @Repository
-trait TransactionRepository extends JpaRepository[Transaction, Long] {}
+public interface TransactionRepository extends JpaRepository<Transaction,Long> { }
