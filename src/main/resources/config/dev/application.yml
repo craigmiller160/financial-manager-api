@@ -7,6 +7,7 @@ spring:
     port: 30001
     username: user
     password: password
+    dbName: financial_manager_dev
 
 oauth2:
   auth-server-host: https://localhost:7003

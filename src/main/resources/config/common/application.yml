@@ -10,7 +10,7 @@ spring:
     hibernate:
       ddl-auto: none
   datasource:
-    url: jdbc:postgresql://${spring.datasource.host}:${spring.datasource.port}/financial_manager
+    url: jdbc:postgresql://${spring.datasource.host}:${spring.datasource.port}/${spring.datasource.dbName}
 
 oauth2:
   auth-login-base-uri: "/oauth2"
