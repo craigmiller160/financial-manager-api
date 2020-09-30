@@ -19,7 +19,7 @@
 package io.craigmiller160.financialmanager.jpa.entity
 
 import javax.persistence.{Entity, GenerationType, Table}
-import io.craigmiller160.financialmanager.scalautil.ScalaJpaAnnotations.{Id,GeneratedValue}
+import io.craigmiller160.financialmanager.jpa.ScalaJpaAnnotations.{Id,GeneratedValue}
 
 @Entity
 @Table(name = "categories")

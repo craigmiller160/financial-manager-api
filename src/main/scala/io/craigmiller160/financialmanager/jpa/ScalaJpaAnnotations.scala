@@ -16,14 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.scalautil
+package io.craigmiller160.financialmanager.jpa
 
 import scala.annotation.meta.field
 
 object ScalaJpaAnnotations {
-    type Id = javax.persistence.Id @field
-    type GeneratedValue = javax.persistence.GeneratedValue @field
-    type Column = javax.persistence.Column @field
-    type ManyToOne = javax.persistence.ManyToOne @field
-    type JoinColumn = javax.persistence.JoinColumn @field
+    type Id = javax.persistence.Id@field
+    type GeneratedValue = javax.persistence.GeneratedValue@field
+    type Column = javax.persistence.Column@field
+    type ManyToOne = javax.persistence.ManyToOne@field
+    type JoinColumn = javax.persistence.JoinColumn@field
 }
