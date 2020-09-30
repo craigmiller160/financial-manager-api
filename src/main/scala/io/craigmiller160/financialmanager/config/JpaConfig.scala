@@ -24,7 +24,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @Configuration
 @EnableJpaRepositories(basePackages = Array(
-  "io.craigmiller160.financialmanager.repository",
+  "io.craigmiller160.financialmanager.jpa.repository",
   "io.craigmiller160.oauth2.repository"
 ))
 @EntityScan(basePackages = Array(

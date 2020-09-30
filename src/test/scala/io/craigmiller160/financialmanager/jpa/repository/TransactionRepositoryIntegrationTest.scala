@@ -18,18 +18,22 @@
 
 package io.craigmiller160.financialmanager.jpa.repository
 
+import io.craigmiller160.oauth2.config.OAuthConfig
 import org.junit.jupiter.api.`extension`.ExtendWith
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.wordspec.AnyWordSpec
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.TestContextManager
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @SpringBootTest
 @ExtendWith(Array(classOf[SpringExtension]))
 class TransactionRepositoryIntegrationTest extends AnyWordSpec with BeforeAndAfterEach {
+
+    @MockBean
+    private var oauthConfig: OAuthConfig = _
 
     @Autowired
     private var transactionRepo: TransactionRepository = _
