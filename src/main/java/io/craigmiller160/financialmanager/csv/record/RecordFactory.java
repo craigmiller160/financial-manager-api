@@ -28,16 +28,17 @@ public class RecordFactory {
 
     private static final DateTimeFormatter SLASH_DATE_FORMAT = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
-    // TODO refactor using vavr
     public static ChaseRecord chaseRecord(final String rawRecord) {
-        final var fields = rawRecord.split(",");
-        final var details = fields[0].trim();
-        final var postingDate = LocalDate.parse(fields[1].trim(), SLASH_DATE_FORMAT);
-        final var description = fields[2].trim();
-        final var amount = Double.parseDouble(fields[3].trim());
-        final var type = fields[4].trim();
-        final var balance = StringUtils.isNotBlank(fields[5]) ? Double.parseDouble(fields[5].trim()) : 0;
-        final int checkOrSlipNumber = StringUtils.isNotBlank(fields[6]) ? Integer.parseInt(fields[6].trim()) : 0;
+        final var fields = Array.of(rawRecord.split(","))
+                .map(String::trim);
+
+        final var details = fields.get(0);
+        final var postingDate = LocalDate.parse(fields.get(1), SLASH_DATE_FORMAT);
+        final var description = fields.get(2);
+        final var amount = Double.parseDouble(fields.get(3));
+        final var type = fields.get(4);
+        final var balance = !fields.get(5).isBlank() ? Double.parseDouble(fields.get(5)) : 0;
+        final int checkOrSlipNumber = !fields.get(6).isBlank() ? Integer.parseInt(fields.get(6)) : 0;
 
         return new ChaseRecord(
                 details,
