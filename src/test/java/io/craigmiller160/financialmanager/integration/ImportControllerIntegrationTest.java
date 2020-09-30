@@ -20,7 +20,8 @@ package io.craigmiller160.financialmanager.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWKSet;
-import io.craigmiller160.apitestprocessor.JavaApiTestProcessor;
+import io.craigmiller160.apitestprocessor.ApiTestProcessor;
+import io.craigmiller160.apitestprocessor.config.AuthType;
 import io.craigmiller160.financialmanager.testutils.JwtUtils;
 import io.craigmiller160.oauth2.config.OAuthConfig;
 import org.junit.jupiter.api.BeforeAll;
@@ -59,7 +60,7 @@ public class ImportControllerIntegrationTest {
 
     @MockBean
     private OAuthConfig oAuthConfig;
-    private JavaApiTestProcessor apiTestProcessor;
+    private ApiTestProcessor apiTestProcessor;
 
     private String token;
 
@@ -75,9 +76,15 @@ public class ImportControllerIntegrationTest {
         final var jwt = JwtUtils.createJwt();
         token = JwtUtils.signAndSerializeJwt(jwt, keyPair.getPrivate());
 
-        apiTestProcessor = JavaApiTestProcessor.createProcessor(setupConfig -> {
+        apiTestProcessor = new ApiTestProcessor(setupConfig -> {
             setupConfig.setMockMvc(mockMvc);
             setupConfig.setObjectMapper(objectMapper);
+            setupConfig.auth(authConfig -> {
+                authConfig.setType(AuthType.BEARER);
+                authConfig.setBearerToken(token);
+                return null;
+            });
+            return null;
         });
     }
 
