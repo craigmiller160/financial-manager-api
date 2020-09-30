@@ -24,4 +24,6 @@ object ScalaJpaAnnotations {
     type Id = javax.persistence.Id @field
     type GeneratedValue = javax.persistence.GeneratedValue @field
     type Column = javax.persistence.Column @field
+    type ManyToOne = javax.persistence.ManyToOne @field
+    type JoinColumn = javax.persistence.JoinColumn @field
 }
