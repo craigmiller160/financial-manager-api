@@ -18,11 +18,16 @@
 
 package io.craigmiller160.financialmanager
 
+import io.craigmiller160.webutils.tls.TlsConfigurer
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
 @SpringBootApplication
 class FinancialManagerApplication
 object FinancialManagerApplication extends App {
-  SpringApplication.run(classOf[FinancialManagerApplication])
+    val TRUST_STORE_TYPE = "JKS"
+    val TRUST_STORE_PATH = "truststore.jks"
+    val TRUST_STORE_PASSWORD = "changeit"
+    TlsConfigurer.INSTANCE.configureTlsTrustStore(TRUST_STORE_PATH, TRUST_STORE_TYPE, TRUST_STORE_PASSWORD)
+    SpringApplication.run(classOf[FinancialManagerApplication])
 }
