@@ -21,9 +21,14 @@ package io.craigmiller160.financialmanager.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWKSet;
 import io.craigmiller160.apitestprocessor.ApiTestProcessor;
+import io.craigmiller160.apitestprocessor.body.Text;
 import io.craigmiller160.apitestprocessor.config.AuthType;
+import io.craigmiller160.financialmanager.jpa.repository.TransactionRepository;
 import io.craigmiller160.financialmanager.testutils.JwtUtils;
 import io.craigmiller160.oauth2.config.OAuthConfig;
+import io.vavr.control.Option;
+import io.vavr.control.Try;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,11 +37,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -57,6 +65,8 @@ public class ImportControllerIntegrationTest {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private TransactionRepository transactionRepo;
 
     @MockBean
     private OAuthConfig oAuthConfig;
@@ -86,11 +96,35 @@ public class ImportControllerIntegrationTest {
             });
             return null;
         });
+
+        transactionRepo.deleteAll();
+    }
+
+    protected String loadCsv(final String fileName) {
+        return Option.of(getClass().getClassLoader().getResourceAsStream(String.format("csv/%s", fileName)))
+                .flatMap(stream ->
+                        Try.of(() -> IOUtils.toString(stream, StandardCharsets.UTF_8))
+                                .toOption()
+                )
+                .getOrElseThrow(() -> new RuntimeException("Could not load CSV file"));
     }
 
     @Test
     public void test_doImport_chase() {
-        throw new RuntimeException();
+        final String csv = loadCsv("chase.csv");
+        apiTestProcessor.call(apiConfig -> {
+            apiConfig.request(reqConfig -> {
+                reqConfig.setMethod(HttpMethod.POST);
+                reqConfig.setPath("/import/CHASE");
+                reqConfig.setBody(new Text(csv));
+                return null;
+            });
+            apiConfig.response(resConfig -> {
+                resConfig.setStatus(204);
+                return null;
+            });
+            return null;
+        });
     }
 
     @Test
