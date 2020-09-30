@@ -19,13 +19,26 @@
 package io.craigmiller160.financialmanager.jpa.repository
 
 import org.junit.jupiter.api.`extension`.ExtendWith
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.wordspec.AnyWordSpec
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.TestContextManager
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
-@DataJpaTest
+@SpringBootTest
 @ExtendWith(Array(classOf[SpringExtension]))
-class TransactionRepositoryIntegrationTest extends AnyWordSpec {
+class TransactionRepositoryIntegrationTest extends AnyWordSpec with BeforeAndAfterEach {
+
+    @Autowired
+    private var transactionRepo: TransactionRepository = _
+
+    new TestContextManager(getClass).prepareTestInstance(this)
+
+    override def beforeEach(): Unit = {
+        println(transactionRepo) // TODO delete this
+    }
 
     "First Test" when {
         "do stuff" should {

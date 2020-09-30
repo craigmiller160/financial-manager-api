@@ -20,7 +20,8 @@ package io.craigmiller160.financialmanager.jpa.entity
 
 import java.time.LocalDate
 
-import javax.persistence.{Entity, FetchType, GeneratedValue, GenerationType, Id, JoinColumn, ManyToOne, Table}
+import javax.persistence.{Entity, FetchType, GenerationType, JoinColumn, ManyToOne, Table}
+import io.craigmiller160.financialmanager.scalautil.ScalaJpaAnnotations.{Id,GeneratedValue}
 
 @Entity
 @Table(name = "transactions")

@@ -16,16 +16,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.jpa.entity
+package io.craigmiller160.financialmanager.scalautil
 
-import javax.persistence.{Entity, GenerationType, Table}
-import io.craigmiller160.financialmanager.scalautil.ScalaJpaAnnotations.{Id,GeneratedValue}
+import scala.annotation.meta.field
 
-@Entity
-@Table(name = "categories")
-case class Category(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    id: Long,
-    name: String
-)
+object ScalaJpaAnnotations {
+    type Id = javax.persistence.Id @field
+    type GeneratedValue = javax.persistence.GeneratedValue @field
+    type Column = javax.persistence.Column @field
+}
