@@ -18,5 +18,49 @@
 
 package io.craigmiller160.financialmanager.csv.parser;
 
-public class ChaseCsvParserTest {
+import io.craigmiller160.financialmanager.csv.record.ChaseRecord;
+import io.vavr.collection.List;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@ExtendWith(MockitoExtension.class)
+public class ChaseCsvParserTest extends AbstractCsvParserTest {
+
+    private final ChaseCsvParser parser = new ChaseCsvParser();
+
+    private final ChaseRecord record1 = new ChaseRecord(
+            "DEBIT",
+            LocalDate.of(2020, 9, 28),
+            "Something or Other",
+            -51.83,
+            "MISC_DEBIT",
+            100.20,
+            1
+    );
+    private final ChaseRecord record2 = new ChaseRecord(
+            "DEBIT",
+            LocalDate.of(2020, 9, 27),
+            "Different Thing",
+            -86.83,
+            "ACH_DEBIT",
+            80.30,
+            2
+    );
+
+    @Test
+    public void test_parse() {
+        final String csv = loadCsv("chase.csv")
+                .getOrElseThrow(() -> new RuntimeException("Unable to load CSV file"));
+
+        final List<ChaseRecord> records = parser.parse(csv);
+        assertEquals(2, records.size());
+        assertEquals(record1, records.get(0));
+        assertEquals(record2, records.get(1));
+    }
+
 }
