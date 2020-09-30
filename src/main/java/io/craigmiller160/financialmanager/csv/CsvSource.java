@@ -16,16 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.service;
+package io.craigmiller160.financialmanager.csv;
 
-import io.craigmiller160.financialmanager.csv.CsvSource;
-import org.springframework.stereotype.Service;
-
-@Service
-public class ImportService {
-
-    public void doImport(final CsvSource source, final String csv) {
-
-    }
-
+public enum CsvSource {
+    CHASE, DISCOVER;
 }

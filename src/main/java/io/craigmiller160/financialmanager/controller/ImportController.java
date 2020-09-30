@@ -18,6 +18,7 @@
 
 package io.craigmiller160.financialmanager.controller;
 
+import io.craigmiller160.financialmanager.csv.CsvSource;
 import io.craigmiller160.financialmanager.service.ImportService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +35,8 @@ public class ImportController {
     }
 
     @PostMapping(value = "/{source}", consumes = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<Void> doImport(@PathVariable final String source, @RequestBody final String csv) {
-        // TODO parse csv
+    public ResponseEntity<Void> doImport(@PathVariable final CsvSource source, @RequestBody final String csv) {
+        importService.doImport(source, csv);
         return ResponseEntity.noContent().build();
     }
 
