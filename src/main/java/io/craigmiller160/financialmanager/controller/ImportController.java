@@ -36,7 +36,7 @@ public class ImportController {
 
     @PostMapping(value = "/{source}", consumes = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<Void> doImport(@PathVariable final CsvSource source, @RequestBody final String csv) {
-        importService.doImport(source, csv);
+        importService.doImport(source, csv).get();
         return ResponseEntity.noContent().build();
     }
 

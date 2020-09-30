@@ -25,6 +25,7 @@ import io.craigmiller160.financialmanager.csv.record.TransactionRecord;
 import io.craigmiller160.financialmanager.jpa.entity.Transaction;
 import io.craigmiller160.financialmanager.jpa.repository.TransactionRepository;
 import io.vavr.collection.List;
+import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,14 +36,15 @@ public class ImportService {
     private final CsvParserFactory csvParserFactory;
     private final TransactionRepository transactionRepo;
 
-    public void doImport(final CsvSource source, final String csv) {
+    public Try<List<Transaction>> doImport(final CsvSource source, final String csv) {
         // TODO need exception handling for invalid payloads
         // TODO need the authenticated user id
         final CsvParser parser = getParser(source);
-//        final List<Transaction> records = parser.parse(csv)
-//                .map(TransactionRecord::toEntity);
-//
-//        transactionRepo.saveAll(records);
+        return parser.parse(csv)
+                .map(list -> {
+                    final List<Transaction> entityList = list.map(TransactionRecord::toEntity);
+                    return List.ofAll(transactionRepo.saveAll(entityList));
+                });
     }
 
     private CsvParser getParser(final CsvSource source) {
