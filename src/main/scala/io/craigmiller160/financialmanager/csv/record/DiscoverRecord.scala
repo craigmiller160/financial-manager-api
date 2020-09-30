@@ -18,4 +18,15 @@
 
 package io.craigmiller160.financialmanager.csv.record
 
-case class DiscoverRecord()
+import java.time.LocalDate
+
+case class DiscoverRecord(
+    transDate: LocalDate,
+    postDate: LocalDate,
+    description: String,
+    amount: Double,
+    category: String
+) extends BaseRecord {
+    override def toTransactionRecord: TransactionRecord =
+        TransactionRecord(postDate, description, amount)
+}
