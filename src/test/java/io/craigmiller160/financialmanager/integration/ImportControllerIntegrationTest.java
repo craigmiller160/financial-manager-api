@@ -18,22 +18,28 @@
 
 package io.craigmiller160.financialmanager.integration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWKSet;
+import io.craigmiller160.apitestprocessor.JavaApiTestProcessor;
 import io.craigmiller160.financialmanager.testutils.JwtUtils;
 import io.craigmiller160.oauth2.config.OAuthConfig;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.security.KeyPair;
 
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
+@AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 public class ImportControllerIntegrationTest {
 
@@ -46,8 +52,14 @@ public class ImportControllerIntegrationTest {
         jwkSet = JwtUtils.createJwkSet(keyPair);
     }
 
+    @Autowired
+    private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @MockBean
     private OAuthConfig oAuthConfig;
+    private JavaApiTestProcessor apiTestProcessor;
 
     private String token;
 
@@ -63,7 +75,10 @@ public class ImportControllerIntegrationTest {
         final var jwt = JwtUtils.createJwt();
         token = JwtUtils.signAndSerializeJwt(jwt, keyPair.getPrivate());
 
-
+        apiTestProcessor = JavaApiTestProcessor.createProcessor(setupConfig -> {
+            setupConfig.setMockMvc(mockMvc);
+            setupConfig.setObjectMapper(objectMapper);
+        });
     }
 
     @Test
