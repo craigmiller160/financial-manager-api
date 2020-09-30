@@ -26,6 +26,7 @@ import io.craigmiller160.apitestprocessor.config.AuthType;
 import io.craigmiller160.financialmanager.jpa.repository.TransactionRepository;
 import io.craigmiller160.financialmanager.testutils.JwtUtils;
 import io.craigmiller160.oauth2.config.OAuthConfig;
+import io.vavr.collection.List;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import org.apache.commons.io.IOUtils;
@@ -125,6 +126,10 @@ public class ImportControllerIntegrationTest {
             });
             return null;
         });
+
+        final var allTxns = List.ofAll(transactionRepo.findAll());
+        assertEquals(2, allTxns.size());
+        // TODO test individual transactions
     }
 
     @Test
