@@ -18,12 +18,14 @@
 
 package io.craigmiller160.financialmanager.csv.parser
 
-abstract class AbstractCsvParser[R] {
+import scala.reflect.ClassTag
+
+abstract class AbstractCsvParser[R](implicit tag: ClassTag[R]) {
     protected def createRecord(rawRecord: String): R
 
     def parse(csv: String): List[R] =
         csv.split("\n")
             .drop(1)
-            .map(createRecord)
+            .map { record => createRecord(record) }
             .toList
 }
