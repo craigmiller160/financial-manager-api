@@ -19,13 +19,24 @@
 package io.craigmiller160.financialmanager.jpa.repository
 
 import org.junit.jupiter.api.`extension`.ExtendWith
+import org.scalatest.wordspec.AnyWordSpec
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @DataJpaTest
-@ExtendWith(classOf[SpringExtension])
+@ExtendWith(Array(classOf[SpringExtension]))
 class TransactionRepositoryIntegrationTest extends AnyWordSpec {
 
+    "First Test" when {
+        "do stuff" should {
+            "happy" in {
+                println("Working")
+            }
+        }
 
+        "other" in {
+            println("Working 2")
+        }
+    }
 
 }
