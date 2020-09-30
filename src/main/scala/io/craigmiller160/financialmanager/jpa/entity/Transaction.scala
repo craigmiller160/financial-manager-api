@@ -20,7 +20,7 @@ package io.craigmiller160.financialmanager.jpa.entity
 
 import java.time.LocalDate
 
-import io.craigmiller160.financialmanager.jpa.ScalaJpaAnnotations.{GeneratedValue, Id, JoinColumn, ManyToOne}
+import io.craigmiller160.financialmanager.jpa.ScalaJpaAnnotations.{Column, GeneratedValue, Id, JoinColumn, ManyToOne}
 import javax.persistence.{Entity, FetchType, GenerationType, Table}
 
 @Entity
@@ -31,11 +31,12 @@ case class Transaction (
     id: Long,
     description: String,
     amount: Double,
-    postDate: LocalDate,
+//    postDate: LocalDate,
     userId: String,
-    categoryId: Option[Long] = None,
-
+    @Column(name = "category_id")
+    categoryId: Long = 0
+) {
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id")
-    category: Option[Category] = None
-)
+    @JoinColumn(name = "category_id", insertable = false, updatable = false)
+    var category: Category = _
+}

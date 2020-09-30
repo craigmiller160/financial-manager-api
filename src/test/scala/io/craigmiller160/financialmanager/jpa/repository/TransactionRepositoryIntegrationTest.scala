@@ -18,6 +18,9 @@
 
 package io.craigmiller160.financialmanager.jpa.repository
 
+import java.time.LocalDate
+
+import io.craigmiller160.financialmanager.jpa.entity.Transaction
 import io.craigmiller160.oauth2.config.OAuthConfig
 import org.junit.jupiter.api.`extension`.ExtendWith
 import org.scalatest.BeforeAndAfterEach
@@ -41,18 +44,14 @@ class TransactionRepositoryIntegrationTest extends AnyWordSpec with BeforeAndAft
     new TestContextManager(getClass).prepareTestInstance(this)
 
     override def beforeEach(): Unit = {
-        println(transactionRepo) // TODO delete this
+        val txn = Transaction(0, "First Txn", 100.0, "abc@gmail.com")
+        transactionRepo.save(txn)
     }
 
-    "First Test" when {
-        "do stuff" should {
-            "happy" in {
-                println("Working")
-            }
-        }
-
-        "other" in {
-            println("Working 2")
+    "TransactionRepository behaves" when {
+        "transaction saved properly" in {
+            val txnOptional = transactionRepo.findById(1L)
+            println(txnOptional.isPresent)
         }
     }
 
