@@ -43,7 +43,10 @@ public abstract class AbstractCsvParser<R extends BaseRecord> implements CsvPars
                     .filter(this::acceptRecord)
                     .map(BaseRecord::toTransactionRecord)
         )
-                .recoverWith(ex -> Try.failure(new CsvParsingException("Error parsing CSV", ex)));
+                .recoverWith(ex -> {
+                    final String message = String.format("Error parsing CSV: %s: %s", ex.getClass().getName(), ex.getMessage());
+                    return Try.failure(new CsvParsingException(message, ex));
+                });
     }
 
 }

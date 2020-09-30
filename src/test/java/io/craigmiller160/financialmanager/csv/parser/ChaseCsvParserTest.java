@@ -18,9 +18,11 @@
 
 package io.craigmiller160.financialmanager.csv.parser;
 
-import io.craigmiller160.financialmanager.csv.record.ChaseRecord;
 import io.craigmiller160.financialmanager.csv.record.TransactionRecord;
+import io.craigmiller160.financialmanager.exception.CsvParsingException;
 import io.vavr.collection.List;
+import io.vavr.collection.Stream;
+import io.vavr.control.Try;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,6 +30,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
 public class ChaseCsvParserTest extends AbstractCsvParserTest {
@@ -49,7 +52,7 @@ public class ChaseCsvParserTest extends AbstractCsvParserTest {
         final String csv = loadCsv("chase.csv")
                 .getOrElseThrow(() -> new RuntimeException("Unable to load CSV file"));
 
-        final List<TransactionRecord> records = parser.parse(csv).get();
+        final List<TransactionRecord> records = parser.parse(csv).get().toList();
         assertEquals(2, records.size());
 
         assertEquals(txnRecord1, records.get(0));
@@ -58,7 +61,13 @@ public class ChaseCsvParserTest extends AbstractCsvParserTest {
 
     @Test
     public void test_parse_error() {
-        throw new RuntimeException();
+        final String csv = loadCsv("chase.csv")
+                .getOrElseThrow(() -> new RuntimeException("Unable to load CSV file"));
+        final String modifiedCsv = csv.replaceAll("-51\\.83", "ABCDEFG");
+        final Try<Stream<TransactionRecord>> recordsTry = parser.parse(modifiedCsv);
+        assertTrue(recordsTry.isFailure());
+        assertTrue(recordsTry.getCause() instanceof CsvParsingException);
+        assertEquals("Error parsing CSV: java.lang.NumberFormatException: For input string: \"ABCDEFG\"", recordsTry.getCause().getMessage());
     }
 
 }

@@ -48,7 +48,7 @@ public class DiscoverCsvParserTest extends AbstractCsvParserTest {
         final String csv = loadCsv("discover.csv")
                 .getOrElseThrow(() -> new RuntimeException("Unable to load CSV file"));
 
-        final List<TransactionRecord> records = parser.parse(csv).get();
+        final List<TransactionRecord> records = parser.parse(csv).get().toList();
         assertEquals(2, records.size());
 
         assertEquals(record1, records.get(0));
