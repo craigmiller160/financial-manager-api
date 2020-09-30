@@ -18,9 +18,9 @@
 
 package io.craigmiller160.financialmanager.csv.parser
 
-import io.craigmiller160.financialmanager.csv.record.{ChaseRecord, RecordFactory}
+import io.craigmiller160.financialmanager.csv.record.{DiscoverRecord, RecordFactory}
 
-class ChaseCsvParser extends AbstractCsvParser[ChaseRecord] {
-    override protected def createRecord(rawRecord: String): ChaseRecord =
-        RecordFactory.chaseRecord(rawRecord)
+class DiscoverCsvParser extends AbstractCsvParser[DiscoverRecord] {
+    override protected def createRecord(rawRecord: String): DiscoverRecord =
+        RecordFactory.discoverRecord(rawRecord)
 }
