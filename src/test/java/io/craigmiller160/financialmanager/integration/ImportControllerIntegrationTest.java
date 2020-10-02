@@ -49,6 +49,7 @@ import java.security.KeyPair;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.notNullValue;
@@ -146,6 +147,16 @@ public class ImportControllerIntegrationTest {
         validateTransaction(allTxns.get(1), "Different Thing", 86.83);
     }
 
+    private void validateBadRequest(final ErrorResponse error, final String message, final String path) {
+        assertThat(error, allOf(
+                hasProperty("timestamp", notNullValue()),
+                hasProperty("status", equalTo(400)),
+                hasProperty("error", equalTo("Bad Request")),
+                hasProperty("message", containsString(message)),
+                hasProperty("path", equalTo(path))
+        ));
+    }
+
     @Test
     public void test_doImport_chase_badCsv() throws Exception {
         final String csv = loadCsv("chase.csv");
@@ -161,15 +172,25 @@ public class ImportControllerIntegrationTest {
             });
         }).convert(ErrorResponse.class);
 
-        assertThat(result, allOf(
-                hasProperty("timestamp", notNullValue()),
-                hasProperty("status", equalTo(400)),
-                hasProperty("error", equalTo("Bad Request")),
-                hasProperty("message", equalTo("Invalid CSV Payload - Error parsing CSV: java.lang.NumberFormatException: For input string: \"ABC\"")),
-                hasProperty("path", equalTo("/import/CHASE"))
-        ));
-
+        validateBadRequest(result, "Error parsing CSV: java.lang.NumberFormatException", "/import/CHASE");
         assertEquals(0, transactionRepo.count());
+    }
+
+    @Test
+    public void test_doImport_invalidType() {
+        final String csv = loadCsv("chase.csv");
+        var result = apiTestProcessor.call(apiConfig -> {
+            apiConfig.request(reqConfig -> {
+                reqConfig.setMethod(HttpMethod.POST);
+                reqConfig.setPath("/import/ABC");
+                reqConfig.setBody(new Text(csv));
+            });
+            apiConfig.response(resConfig -> {
+                resConfig.setStatus(400);
+            });
+        }).convert(ErrorResponse.class);
+
+        validateBadRequest(result, "Failed to convert value of type", "/import/ABC");
     }
 
     @Test
