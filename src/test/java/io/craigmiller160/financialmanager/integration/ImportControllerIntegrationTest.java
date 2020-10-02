@@ -23,6 +23,7 @@ import com.nimbusds.jose.jwk.JWKSet;
 import io.craigmiller160.apitestprocessor.ApiTestProcessor;
 import io.craigmiller160.apitestprocessor.body.Text;
 import io.craigmiller160.apitestprocessor.config.AuthType;
+import io.craigmiller160.financialmanager.jpa.entity.Transaction;
 import io.craigmiller160.financialmanager.jpa.repository.TransactionRepository;
 import io.craigmiller160.financialmanager.testutils.JwtUtils;
 import io.craigmiller160.oauth2.config.OAuthConfig;
@@ -45,6 +46,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -99,13 +106,23 @@ public class ImportControllerIntegrationTest {
         transactionRepo.deleteAll();
     }
 
-    protected String loadCsv(final String fileName) {
+    private String loadCsv(final String fileName) {
         return Option.of(getClass().getClassLoader().getResourceAsStream(String.format("csv/%s", fileName)))
                 .flatMap(stream ->
                         Try.of(() -> IOUtils.toString(stream, StandardCharsets.UTF_8))
                                 .toOption()
                 )
                 .getOrElseThrow(() -> new RuntimeException("Could not load CSV file"));
+    }
+
+    private void validateTransaction(final Transaction txn, final String description, final double amount) {
+        assertThat(txn, allOf(
+                hasProperty("id", notNullValue()),
+                hasProperty("description", equalTo(description)),
+                hasProperty("amount", equalTo(amount)),
+                hasProperty("categoryId", nullValue()),
+                hasProperty("userId", equalTo(JwtUtils.USERNAME))
+        ));
     }
 
     @Test
@@ -122,9 +139,10 @@ public class ImportControllerIntegrationTest {
             });
         });
 
-        final var allTxns = List.ofAll(transactionRepo.findAll());
+        final var allTxns = transactionRepo.findAll();
         assertEquals(2, allTxns.size());
-        // TODO test individual transactions
+        validateTransaction(allTxns.get(0), "Something or Other", 51.83);
+        validateTransaction(allTxns.get(1), "Different Thing", 86.83);
     }
 
     @Test
