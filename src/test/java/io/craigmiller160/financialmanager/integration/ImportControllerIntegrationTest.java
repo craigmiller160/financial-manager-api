@@ -27,6 +27,7 @@ import io.craigmiller160.financialmanager.jpa.entity.Transaction;
 import io.craigmiller160.financialmanager.jpa.repository.TransactionRepository;
 import io.craigmiller160.financialmanager.testutils.JwtUtils;
 import io.craigmiller160.oauth2.config.OAuthConfig;
+import io.craigmiller160.webutils.dto.ErrorResponse;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
@@ -146,8 +147,29 @@ public class ImportControllerIntegrationTest {
     }
 
     @Test
-    public void test_doImport_chase_badCsv() {
-        throw new RuntimeException();
+    public void test_doImport_chase_badCsv() throws Exception {
+        final String csv = loadCsv("chase.csv");
+        final String badCsv = csv.replaceAll("-51.83", "ABC");
+        var result = apiTestProcessor.call(apiConfig -> {
+            apiConfig.request(reqConfig -> {
+                reqConfig.setMethod(HttpMethod.POST);
+                reqConfig.setPath("/import/CHASE");
+                reqConfig.setBody(new Text(badCsv));
+            });
+            apiConfig.response(resConfig -> {
+                resConfig.setStatus(400);
+            });
+        }).convert(ErrorResponse.class);
+
+        assertThat(result, allOf(
+                hasProperty("timestamp", notNullValue()),
+                hasProperty("status", equalTo(400)),
+                hasProperty("error", equalTo("Bad Request")),
+                hasProperty("message", equalTo("Invalid CSV Payload - Error parsing CSV: java.lang.NumberFormatException: For input string: \"ABC\"")),
+                hasProperty("path", equalTo("/import/CHASE"))
+        ));
+
+        assertEquals(0, transactionRepo.count());
     }
 
     @Test
