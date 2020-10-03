@@ -18,7 +18,9 @@
 
 package io.craigmiller160.financialmanager.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public record CategoryDto (
-        long id,
-        String name
+        @JsonProperty long id,
+        @JsonProperty String name
 ) { }
