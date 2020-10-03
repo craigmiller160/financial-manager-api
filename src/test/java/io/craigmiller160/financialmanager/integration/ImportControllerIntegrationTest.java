@@ -46,6 +46,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
+import java.time.LocalDate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
@@ -117,14 +118,16 @@ public class ImportControllerIntegrationTest {
                 .getOrElseThrow(() -> new RuntimeException("Could not load CSV file"));
     }
 
-    private void validateTransaction(final Transaction txn, final String description, final double amount) {
+    private void validateTransaction(final Transaction txn, final String description, final double amount, final LocalDate postDate) {
         assertThat(txn, allOf(
                 hasProperty("id", notNullValue()),
                 hasProperty("description", equalTo(description)),
                 hasProperty("amount", equalTo(amount)),
                 hasProperty("categoryId", nullValue()),
-                hasProperty("userId", equalTo(JwtUtils.USERNAME))
+                hasProperty("userId", equalTo(JwtUtils.USERNAME)),
+                hasProperty("postDate", equalTo(postDate))
         ));
+        // TODO postDate
     }
 
     @Test
@@ -143,8 +146,8 @@ public class ImportControllerIntegrationTest {
 
         final var allTxns = transactionRepo.findAll();
         assertEquals(2, allTxns.size());
-        validateTransaction(allTxns.get(0), "Something or Other", 51.83);
-        validateTransaction(allTxns.get(1), "Different Thing", 86.83);
+        validateTransaction(allTxns.get(0), "Something or Other", 51.83, LocalDate.of(2020, 9, 28));
+        validateTransaction(allTxns.get(1), "Different Thing", 86.83, LocalDate.of(2020, 9, 27));
     }
 
     private void validateBadRequest(final ErrorResponse error, final String message, final String path) {
@@ -177,7 +180,46 @@ public class ImportControllerIntegrationTest {
     }
 
     @Test
-    public void test_doImport_invalidType() {
+    public void test_doImport_discover() {
+        final String csv = loadCsv("discover.csv");
+        apiTestProcessor.call(apiConfig -> {
+            apiConfig.request(reqConfig -> {
+                reqConfig.setMethod(HttpMethod.POST);
+                reqConfig.setPath("/import/DISCOVER");
+                reqConfig.setBody(new Text(csv));
+            });
+            apiConfig.response(resConfig -> {
+                resConfig.setStatus(204);
+            });
+        });
+
+        final var allTxns = transactionRepo.findAll();
+        assertEquals(2, allTxns.size());
+        validateTransaction(allTxns.get(0), "Place 1", 44.88, LocalDate.of(2020, 9, 16));
+        validateTransaction(allTxns.get(1), "Place 2", 4.99, LocalDate.of(2020, 9, 15));
+    }
+
+    @Test
+    public void test_doImport_discover_badCsv() {
+        final String csv = loadCsv("discover.csv");
+        final String badCsv = csv.replaceAll("44.88", "ABC");
+        var result = apiTestProcessor.call(apiConfig -> {
+            apiConfig.request(reqConfig -> {
+                reqConfig.setMethod(HttpMethod.POST);
+                reqConfig.setPath("/import/DISCOVER");
+                reqConfig.setBody(new Text(badCsv));
+            });
+            apiConfig.response(resConfig -> {
+                resConfig.setStatus(400);
+            });
+        }).convert(ErrorResponse.class);
+
+        validateBadRequest(result, "Error parsing CSV: java.lang.NumberFormatException", "/import/DISCOVER");
+        assertEquals(0, transactionRepo.count());
+    }
+
+    @Test
+    public void test_doImport_invalidSource() {
         final String csv = loadCsv("chase.csv");
         var result = apiTestProcessor.call(apiConfig -> {
             apiConfig.request(reqConfig -> {
@@ -191,21 +233,6 @@ public class ImportControllerIntegrationTest {
         }).convert(ErrorResponse.class);
 
         validateBadRequest(result, "Failed to convert value of type", "/import/ABC");
-    }
-
-    @Test
-    public void test_doImport_discover() {
-        throw new RuntimeException();
-    }
-
-    @Test
-    public void test_doImport_discover_badCsv() {
-        throw new RuntimeException();
-    }
-
-    @Test
-    public void test_doImport_invalidSource() {
-        throw new RuntimeException();
     }
 
 }
