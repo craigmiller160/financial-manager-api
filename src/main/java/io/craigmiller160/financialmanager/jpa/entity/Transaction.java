@@ -20,7 +20,16 @@ package io.craigmiller160.financialmanager.jpa.entity;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
@@ -32,9 +41,13 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
+    @NotNull
     private Double amount;
+    @NotNull
     private LocalDate postDate;
+    @NotNull
     private String userId;
+    @Column(name = "category_id")
     private Long categoryId;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -16,22 +16,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.csv.parser;
+package io.craigmiller160.financialmanager.csv;
 
-import io.craigmiller160.financialmanager.csv.record.ChaseRecord;
-import io.craigmiller160.financialmanager.csv.record.RecordFactory;
-import io.vavr.control.Try;
-import org.springframework.stereotype.Component;
-
-@Component
-public class ChaseCsvParser extends AbstractCsvParser<ChaseRecord> {
-    @Override
-    protected Try<ChaseRecord> createRecord(final String rawRecord) {
-        return Try.of(() -> RecordFactory.chaseRecord(rawRecord));
-    }
-
-    @Override
-    protected boolean acceptRecord(final ChaseRecord record) {
-        return !"CREDIT".equals(record.details());
-    }
+public enum CsvSource {
+    CHASE, DISCOVER;
 }

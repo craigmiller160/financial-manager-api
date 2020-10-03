@@ -18,20 +18,16 @@
 
 package io.craigmiller160.financialmanager.csv.parser;
 
-import io.craigmiller160.financialmanager.csv.record.ChaseRecord;
-import io.craigmiller160.financialmanager.csv.record.RecordFactory;
-import io.vavr.control.Try;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
+@Getter
+@AllArgsConstructor
 @Component
-public class ChaseCsvParser extends AbstractCsvParser<ChaseRecord> {
-    @Override
-    protected Try<ChaseRecord> createRecord(final String rawRecord) {
-        return Try.of(() -> RecordFactory.chaseRecord(rawRecord));
-    }
+public class CsvParserFactory {
 
-    @Override
-    protected boolean acceptRecord(final ChaseRecord record) {
-        return !"CREDIT".equals(record.details());
-    }
+    private final CsvParser chaseCsvParser;
+    private final CsvParser discoverCsvParser;
+
 }

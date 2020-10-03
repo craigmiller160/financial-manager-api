@@ -16,22 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.csv.parser;
+package io.craigmiller160.financialmanager.exception;
 
-import io.craigmiller160.financialmanager.csv.record.ChaseRecord;
-import io.craigmiller160.financialmanager.csv.record.RecordFactory;
-import io.vavr.control.Try;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Component
-public class ChaseCsvParser extends AbstractCsvParser<ChaseRecord> {
-    @Override
-    protected Try<ChaseRecord> createRecord(final String rawRecord) {
-        return Try.of(() -> RecordFactory.chaseRecord(rawRecord));
+@ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "Invalid CSV Payload")
+public class CsvParsingException extends Exception {
+
+    public CsvParsingException(final String msg) {
+        this(msg, null);
     }
 
-    @Override
-    protected boolean acceptRecord(final ChaseRecord record) {
-        return !"CREDIT".equals(record.details());
+    public CsvParsingException(final String msg, final Throwable ex) {
+        super (msg, ex);
     }
+
 }

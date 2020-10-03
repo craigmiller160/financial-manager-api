@@ -18,20 +18,15 @@
 
 package io.craigmiller160.financialmanager.csv.parser;
 
-import io.craigmiller160.financialmanager.csv.record.ChaseRecord;
-import io.craigmiller160.financialmanager.csv.record.RecordFactory;
+import io.craigmiller160.financialmanager.csv.record.TransactionRecord;
+import io.craigmiller160.financialmanager.exception.CsvParsingException;
+import io.vavr.collection.List;
+import io.vavr.collection.Seq;
+import io.vavr.collection.Stream;
 import io.vavr.control.Try;
-import org.springframework.stereotype.Component;
 
-@Component
-public class ChaseCsvParser extends AbstractCsvParser<ChaseRecord> {
-    @Override
-    protected Try<ChaseRecord> createRecord(final String rawRecord) {
-        return Try.of(() -> RecordFactory.chaseRecord(rawRecord));
-    }
+public interface CsvParser {
 
-    @Override
-    protected boolean acceptRecord(final ChaseRecord record) {
-        return !"CREDIT".equals(record.details());
-    }
+    Try<Stream<TransactionRecord>> parse(final String csv);
+
 }
