@@ -127,7 +127,6 @@ public class ImportControllerIntegrationTest {
                 hasProperty("userId", equalTo(JwtUtils.USERNAME)),
                 hasProperty("postDate", equalTo(postDate))
         ));
-        // TODO postDate
     }
 
     @Test
