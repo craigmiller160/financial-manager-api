@@ -18,10 +18,14 @@
 
 package io.craigmiller160.financialmanager.integration;
 
+import io.craigmiller160.financialmanager.dto.CategoryDto;
+import io.craigmiller160.financialmanager.dto.CategoryListDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -33,9 +37,16 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
             apiConfig.request(requestConfig -> {
                 requestConfig.setPath("/categories");
             });
-        });
+        }).convert(CategoryListDto.class);
 
-        System.out.println(result.getContent());
+        assertEquals(2, result.categories().size());
+        assertEquals(new CategoryDto(1L, "First"), result.categories().get(0));
+        assertEquals(new CategoryDto(2L, "Second"), result.categories().get(1));
+    }
+
+    @Test
+    public void test_createCategory() {
+        throw new RuntimeException();
     }
 
 }

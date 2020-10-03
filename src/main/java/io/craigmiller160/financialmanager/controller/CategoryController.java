@@ -19,9 +19,8 @@
 package io.craigmiller160.financialmanager.controller;
 
 import io.craigmiller160.financialmanager.dto.CategoryDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import io.craigmiller160.financialmanager.dto.CategoryListDto;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,10 +29,15 @@ import java.util.List;
 public class CategoryController {
 
     @GetMapping
-    public List<CategoryDto> getAllCategories() {
+    public CategoryListDto getAllCategories() {
         final var category1 = new CategoryDto(1L, "First");
         final var category2 = new CategoryDto(2L, "Second");
-        return List.of(category1, category2);
+        return new CategoryListDto(List.of(category1, category2));
+    }
+
+    @PostMapping
+    public CategoryDto createCategory(@RequestBody final CategoryDto category) {
+        return new CategoryDto(1L, category.name());
     }
 
 }
