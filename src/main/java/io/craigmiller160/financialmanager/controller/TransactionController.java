@@ -25,6 +25,7 @@ import io.craigmiller160.financialmanager.service.TransactionService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +38,7 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public SearchResponseDto searchTransactions(@RequestBody SearchRequestDto searchRequest) {
         return transactionService.searchTransactions(searchRequest);
     }

@@ -18,6 +18,10 @@
 
 package io.craigmiller160.financialmanager.integration;
 
+import io.craigmiller160.apitestprocessor.body.Json;
+import io.craigmiller160.apitestprocessor.result.ApiResult;
+import io.craigmiller160.financialmanager.dto.SearchRequestDto;
+import io.craigmiller160.financialmanager.dto.SearchResponseDto;
 import io.craigmiller160.financialmanager.jpa.entity.Category;
 import io.craigmiller160.financialmanager.jpa.entity.Transaction;
 import io.craigmiller160.financialmanager.jpa.repository.CategoryRepository;
@@ -29,7 +33,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -63,7 +74,22 @@ public class TransactionControllerIntegrationTest extends AbstractControllerInte
 
     @Test
     public void test_searchTransactions_allParams() {
-        throw new RuntimeException();
+        final var searchRequest = new SearchRequestDto(
+                0,
+                LocalDate.now(),
+                LocalDate.now().plus(4, ChronoUnit.DAYS),
+                List.of(category1.getId())
+        );
+        final var result = apiTestProcessor.call(apiConfig -> {
+            apiConfig.request(reqConfig -> {
+                reqConfig.setMethod(HttpMethod.POST);
+                reqConfig.setPath("/transactions/search");
+                reqConfig.setBody(new Json(searchRequest));
+            });
+        }).convert(SearchResponseDto.class);
+
+        assertEquals(2, result.totalPages());
+        // TODO test more values
     }
 
     @Test

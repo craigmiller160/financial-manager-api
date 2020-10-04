@@ -36,8 +36,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -53,7 +51,7 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
     private Category category1;
     private Category category2;
     private Transaction txn1;
-    private Transaction txn2;}
+    private Transaction txn2;
 
     @BeforeEach
     public void setup() {
