@@ -18,21 +18,29 @@
 
 package io.craigmiller160.financialmanager.service;
 
+import io.craigmiller160.financialmanager.config.PaginationConfig;
 import io.craigmiller160.financialmanager.dto.SearchRequestDto;
 import io.craigmiller160.financialmanager.dto.SearchResponseDto;
 import io.craigmiller160.financialmanager.dto.TransactionDto;
+import io.craigmiller160.financialmanager.jpa.entity.Transaction;
 import io.craigmiller160.financialmanager.jpa.repository.TransactionRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
 public class TransactionService {
 
+    // TODO how to handle date timezones?
+
     private final TransactionRepository transactionRepo;
     private final SecurityService securityService;
+    private final PaginationConfig paginationConfig;
 
     public TransactionDto updateTransaction(final long id, final TransactionDto payload) {
         transactionRepo.findById(id)
@@ -45,8 +53,22 @@ public class TransactionService {
     }
 
     public SearchResponseDto searchTransactions(final SearchRequestDto searchRequest) {
-        // TODO finish this
-        return null;
+        var pageRequest = PageRequest.of(
+                searchRequest.getOrDefaultPageNumber(),
+                paginationConfig.getPageSize()
+        );
+
+        final var pageResults = transactionRepo.searchForTransactions(
+                searchRequest.getOrDefaultStartDate(),
+                searchRequest.getOrDefaultEndDate(),
+                searchRequest.getOrDefaultCategoryIds(),
+                pageRequest
+        );
+
+        final var transactions = pageResults.get()
+                .map(Transaction::toDto)
+                .collect(Collectors.toList());
+        return new SearchResponseDto(pageResults.getTotalPages(), searchRequest.getOrDefaultPageNumber(), transactions);
     }
 
 }

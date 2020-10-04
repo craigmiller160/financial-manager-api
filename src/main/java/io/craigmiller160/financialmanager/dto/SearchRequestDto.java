@@ -21,9 +21,29 @@ package io.craigmiller160.financialmanager.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record SearchRequestDto(
+        @JsonProperty("pageNumber") Integer pageNumber,
         @JsonProperty("startDate") LocalDate startDate,
         @JsonProperty("endDate") LocalDate endDate,
-        @JsonProperty("category") CategoryDto category
-) { }
+        @JsonProperty("categoryIds") List<Long> categoryIds
+) {
+
+    public int getOrDefaultPageNumber() {
+        return pageNumber != null ? pageNumber : 0;
+    }
+
+    public LocalDate getOrDefaultStartDate() {
+        return startDate != null ? startDate : LocalDate.MIN;
+    }
+
+    public LocalDate getOrDefaultEndDate() {
+        return endDate != null ? endDate : LocalDate.MAX;
+    }
+
+    public List<Long> getOrDefaultCategoryIds() {
+        return categoryIds != null && categoryIds.size() > 0 ? categoryIds : null;
+    }
+
+}

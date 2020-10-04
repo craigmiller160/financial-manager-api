@@ -16,14 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.dto;
+package io.craigmiller160.financialmanager.config;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
+@Data
+@Configuration
+public class PaginationConfig {
 
-public record SearchResponseDto(
-        @JsonProperty("totalPages") int totalPages,
-        @JsonProperty("currentPage") int currentPage,
-        @JsonProperty("transactions") List<TransactionDto> transactions
-) { }
+    private final int pageSize;
+
+    public PaginationConfig(@Value("financial-manager.pagination.page-size") final int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+}
