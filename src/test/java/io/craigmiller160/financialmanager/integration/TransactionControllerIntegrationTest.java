@@ -40,6 +40,8 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -61,9 +63,13 @@ public class TransactionControllerIntegrationTest extends AbstractControllerInte
     public void setup() {
         category1 = categoryRepo.save(new Category(0L, "Category"));
         txn1 = transactionRepo.save(TestData.createTransaction(1L, category1.getId()));
+        txn1 = transactionRepo.findById(txn1.getId()).get();
         txn2 = transactionRepo.save(TestData.createTransaction(2L, null));
+        txn2 = transactionRepo.findById(txn2.getId()).get();
         txn3 = transactionRepo.save(TestData.createTransaction(3L, category1.getId()));
-        txn4 = transactionRepo.save(TestData.createTransaction(4L, null));
+        txn3 = transactionRepo.findById(txn3.getId()).get();
+        txn4 = transactionRepo.save(TestData.createTransaction(4L, category1.getId()));
+        txn4 = transactionRepo.findById(txn4.getId()).get();
     }
 
     @AfterEach
@@ -89,7 +95,9 @@ public class TransactionControllerIntegrationTest extends AbstractControllerInte
         }).convert(SearchResponseDto.class);
 
         assertEquals(2, result.totalPages());
-        // TODO test more values
+        assertEquals(0, result.currentPage());
+        assertEquals(txn4.toDto(), result.transactions().get(0));
+        assertEquals(txn3.toDto(), result.transactions().get(1));
     }
 
     @Test
