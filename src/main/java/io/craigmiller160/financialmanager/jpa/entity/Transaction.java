@@ -19,7 +19,10 @@
 package io.craigmiller160.financialmanager.jpa.entity;
 
 import io.craigmiller160.financialmanager.dto.TransactionDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.With;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,10 +39,13 @@ import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "transactions")
+@NoArgsConstructor
+@AllArgsConstructor
 @SuppressWarnings("JpaDataSourceORMInspection")
 public class Transaction implements EntityToDto<TransactionDto> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @With
     private Long id;
     private String description;
     @NotNull

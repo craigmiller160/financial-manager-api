@@ -19,8 +19,10 @@
 package io.craigmiller160.financialmanager.integration;
 
 import io.craigmiller160.apitestprocessor.body.Json;
+import io.craigmiller160.financialmanager.dto.CategoryDto;
 import io.craigmiller160.financialmanager.dto.SearchRequestDto;
 import io.craigmiller160.financialmanager.dto.SearchResponseDto;
+import io.craigmiller160.financialmanager.dto.TransactionDto;
 import io.craigmiller160.financialmanager.jpa.entity.Category;
 import io.craigmiller160.financialmanager.jpa.entity.Transaction;
 import io.craigmiller160.financialmanager.jpa.repository.CategoryRepository;
@@ -33,6 +35,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
@@ -190,12 +193,33 @@ public class TransactionControllerIntegrationTest extends AbstractControllerInte
 
     @Test
     public void test_updateTransaction() {
-        throw new RuntimeException();
+        final var payload = txn3.toDto();
+        var result = apiTestProcessor.call(apiConfig -> {
+            apiConfig.request(requestConfig -> {
+                requestConfig.setMethod(HttpMethod.PUT);
+                requestConfig.setPath(String.format("/transactions/%d", txn4.getId()));
+                requestConfig.setBody(new Json(payload));
+            });
+        }).convert(TransactionDto.class);
+
+        assertEquals(result, txn3.withId(txn4.getId()).toDto());
     }
 
     @Test
     public void test_updateTransaction_notFound() {
-        throw new RuntimeException();
+        final var payload = txn3.toDto();
+        var result = apiTestProcessor.call(apiConfig -> {
+            apiConfig.request(requestConfig -> {
+                requestConfig.setMethod(HttpMethod.PUT);
+                requestConfig.setPath(String.format("/transactions/%d", txn4.getId() + 1));
+                requestConfig.setBody(new Json(payload));
+            });
+            apiConfig.response(responseConfig -> {
+                responseConfig.setStatus(400);
+            });
+        });
+
+        validateError(result, HttpStatus.BAD_REQUEST, "No transactions found for id");
     }
 
 }
