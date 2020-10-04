@@ -64,9 +64,9 @@ public class TransactionControllerIntegrationTest extends AbstractControllerInte
         category1 = categoryRepo.save(new Category(0L, "Category"));
         txn1 = transactionRepo.save(TestData.createTransaction(1L, category1.getId()));
         txn1 = transactionRepo.findById(txn1.getId()).get();
-        txn2 = transactionRepo.save(TestData.createTransaction(2L, null));
+        txn2 = transactionRepo.save(TestData.createTransaction(2L, category1.getId()));
         txn2 = transactionRepo.findById(txn2.getId()).get();
-        txn3 = transactionRepo.save(TestData.createTransaction(3L, category1.getId()));
+        txn3 = transactionRepo.save(TestData.createTransaction(3L,null));
         txn3 = transactionRepo.findById(txn3.getId()).get();
         txn4 = transactionRepo.save(TestData.createTransaction(4L, category1.getId()));
         txn4 = transactionRepo.findById(txn4.getId()).get();
@@ -97,12 +97,24 @@ public class TransactionControllerIntegrationTest extends AbstractControllerInte
         assertEquals(2, result.totalPages());
         assertEquals(0, result.currentPage());
         assertEquals(txn4.toDto(), result.transactions().get(0));
-        assertEquals(txn3.toDto(), result.transactions().get(1));
+        assertEquals(txn2.toDto(), result.transactions().get(1));
     }
 
     @Test
     public void test_searchTransactions_noParams() {
-        throw new RuntimeException();
+        final var searchRequest = new SearchRequestDto(0, null, null, null);
+        final var result = apiTestProcessor.call(apiConfig -> {
+            apiConfig.request(reqConfig -> {
+                reqConfig.setMethod(HttpMethod.POST);
+                reqConfig.setPath("/transactions/search");
+                reqConfig.setBody(new Json(searchRequest));
+            });
+        }).convert(SearchResponseDto.class);
+
+        assertEquals(2, result.totalPages());
+        assertEquals(0, result.currentPage());
+        assertEquals(txn4.toDto(), result.transactions().get(0));
+        assertEquals(txn3.toDto(), result.transactions().get(1));
     }
 
     @Test
