@@ -19,8 +19,6 @@
 package io.craigmiller160.financialmanager.jpa.repository;
 
 import io.craigmiller160.financialmanager.jpa.entity.Transaction;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -29,28 +27,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.util.List;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction,Long>, JpaSpecificationExecutor<Transaction> {
-
-    // TODO delete old query methods
-
-    @Query("""
-    SELECT t
-    FROM Transaction t
-    WHERE t.postDate >= :startDate
-    AND t.postDate <= :endDate
-    AND t.categoryId IN (:categoryIds)
-    ORDER BY t.postDate DESC, t.description ASC
-    """)
-    Page<Transaction> searchForTransactions(
-            @Param("startDate") final LocalDate startDate,
-            @Param("endDate") final LocalDate endDate,
-            @Param("categoryIds") final List<Long> categoryIds, // TODO look for ways to not have to set this as null
-            final Pageable pageRequest
-    );
 
     @Transactional
     @Query("""
