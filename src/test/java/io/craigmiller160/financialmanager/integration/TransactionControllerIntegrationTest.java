@@ -28,12 +28,37 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class TransactionControllerIntegrationTest {
 
     @Test
-    public void test_searchTransactions() {
+    public void test_searchTransactions_allParams() {
+        throw new RuntimeException();
+    }
+
+    @Test
+    public void test_searchTransactions_noParams() {
+        throw new RuntimeException();
+    }
+
+    @Test
+    public void test_searchTransactions_onlyStartDate() {
+        throw new RuntimeException();
+    }
+
+    @Test
+    public void test_searchTransactions_onlyEndDate() {
+        throw new RuntimeException();
+    }
+
+    @Test
+    public void test_searchTransactions_onlyCategories() {
         throw new RuntimeException();
     }
 
     @Test
     public void test_updateTransaction() {
+        throw new RuntimeException();
+    }
+
+    @Test
+    public void test_updateTransaction_notFound() {
         throw new RuntimeException();
     }
 
