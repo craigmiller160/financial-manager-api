@@ -39,7 +39,7 @@ public interface TransactionRepository extends JpaRepository<Transaction,Long> {
     FROM Transaction t
     WHERE t.postDate >= :startDate
     AND t.postDate <= :endDate
-    AND (:categoryIds IS NULL OR t.categoryId IN (:categoryIds))
+    AND t.categoryId IN (:categoryIds)
     ORDER BY t.postDate DESC, t.description ASC
     """)
     Page<Transaction> searchForTransactions(
