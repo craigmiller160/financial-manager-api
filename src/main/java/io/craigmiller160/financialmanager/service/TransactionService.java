@@ -80,7 +80,9 @@ public class TransactionService {
     }
 
     public SearchResponseDto searchTransactions(final SearchRequestDto searchRequest) {
-
+        final var spec = spec(searchRequest);
+        final var transactions = transactionRepo.findAll(spec);
+        System.out.println(transactions); // TODO delete this
 
         // TODO finish this
         return null;
