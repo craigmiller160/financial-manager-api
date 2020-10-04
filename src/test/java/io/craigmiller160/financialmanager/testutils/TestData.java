@@ -16,17 +16,25 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.jpa.repository;
+package io.craigmiller160.financialmanager.testutils;
 
-import io.craigmiller160.financialmanager.jpa.entity.Category;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import io.craigmiller160.financialmanager.jpa.entity.Transaction;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
-@Repository
-public interface CategoryRepository extends JpaRepository<Category,Long> {
+public class TestData {
 
-    List<Category> findAllByOrderByName();
+    private TestData() {}
+
+    public static Transaction createTransaction(final long number, final Long categoryId) {
+        final Transaction txn = new Transaction();
+        txn.setPostDate(LocalDate.now().plus(number, ChronoUnit.DAYS));
+        txn.setDescription(String.format("Description_%d", number));
+        txn.setUserId(String.format("userId_%d", number));
+        txn.setAmount(20.0 + number);
+        txn.setCategoryId(categoryId);
+        return txn;
+    }
 
 }

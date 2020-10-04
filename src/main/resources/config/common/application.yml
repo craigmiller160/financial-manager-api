@@ -23,3 +23,7 @@ oauth2:
 logging:
   level:
     root: INFO
+
+financial-manager:
+  pagination:
+    page-size: 20

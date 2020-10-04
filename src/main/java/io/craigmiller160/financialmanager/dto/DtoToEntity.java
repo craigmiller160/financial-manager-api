@@ -16,17 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.jpa.repository;
+package io.craigmiller160.financialmanager.dto;
 
-import io.craigmiller160.financialmanager.jpa.entity.Category;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+public interface DtoToEntity<E> {
 
-import java.util.List;
-
-@Repository
-public interface CategoryRepository extends JpaRepository<Category,Long> {
-
-    List<Category> findAllByOrderByName();
+    E toEntity();
 
 }

@@ -16,36 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.jpa.entity;
+package io.craigmiller160.financialmanager.config;
 
-import io.craigmiller160.financialmanager.dto.CategoryDto;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-@Table(name = "categories")
-@SuppressWarnings("JpaDataSourceORMInspection")
-public class Category implements EntityToDto<CategoryDto> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @NotNull
-    private String name;
+@Configuration
+public class PaginationConfig {
 
-    @Override
-    public CategoryDto toDto() {
-        return new CategoryDto(id, name);
+    private final int pageSize;
+
+    public PaginationConfig(@Value("${financial-manager.pagination.page-size}") final int pageSize) {
+        this.pageSize = pageSize;
     }
 
 }

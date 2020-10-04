@@ -16,17 +16,14 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.jpa.repository;
+package io.craigmiller160.financialmanager.dto;
 
-import io.craigmiller160.financialmanager.jpa.entity.Category;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-@Repository
-public interface CategoryRepository extends JpaRepository<Category,Long> {
-
-    List<Category> findAllByOrderByName();
-
-}
+public record SearchResponseDto(
+        @JsonProperty("totalPages") int totalPages,
+        @JsonProperty("currentPage") int currentPage,
+        @JsonProperty("transactions") List<TransactionDto> transactions
+) { }

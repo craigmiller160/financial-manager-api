@@ -20,7 +20,24 @@ package io.craigmiller160.financialmanager.jpa.repository;
 
 import io.craigmiller160.financialmanager.jpa.entity.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
+
 @Repository
-public interface TransactionRepository extends JpaRepository<Transaction,Long> { }
+public interface TransactionRepository extends JpaRepository<Transaction,Long>, JpaSpecificationExecutor<Transaction> {
+
+    @Transactional
+    @Query("""
+    UPDATE Transaction t
+    SET t.categoryId = null
+    WHERE t.categoryId = :categoryId
+    """)
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    int removeCategoryFromTransactions(@Param("categoryId") final long categoryId);
+
+}
