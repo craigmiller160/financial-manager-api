@@ -19,7 +19,6 @@
 package io.craigmiller160.financialmanager.integration;
 
 import io.craigmiller160.apitestprocessor.body.Json;
-import io.craigmiller160.apitestprocessor.result.ApiResult;
 import io.craigmiller160.financialmanager.dto.SearchRequestDto;
 import io.craigmiller160.financialmanager.dto.SearchResponseDto;
 import io.craigmiller160.financialmanager.jpa.entity.Category;
@@ -40,8 +39,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest

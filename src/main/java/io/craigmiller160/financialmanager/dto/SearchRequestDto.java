@@ -19,8 +19,15 @@
 package io.craigmiller160.financialmanager.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.craigmiller160.financialmanager.jpa.entity.Transaction;
+import org.springframework.data.jpa.domain.Specification;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public record SearchRequestDto(
@@ -34,16 +41,25 @@ public record SearchRequestDto(
         return pageNumber != null ? pageNumber : 0;
     }
 
-    public LocalDate getOrDefaultStartDate() {
-        return startDate != null ? startDate : LocalDate.MIN;
-    }
+    public Specification<Transaction> toJpaSpecification() {
+        return (final Root<Transaction> root, final CriteriaQuery<?> query, final CriteriaBuilder builder) -> {
+            final var criteria = new ArrayList<Predicate>();
+            if (startDate != null) {
+                criteria.add(builder.greaterThanOrEqualTo(root.get("postDate"), startDate));
+            }
 
-    public LocalDate getOrDefaultEndDate() {
-        return endDate != null ? endDate : LocalDate.MAX;
-    }
+            if (endDate != null) {
+                criteria.add(builder.lessThanOrEqualTo(root.get("postDate"), endDate));
+            }
 
-    public List<Long> getOrDefaultCategoryIds() {
-        return categoryIds != null && categoryIds.size() > 0 ? categoryIds : null;
+            if (categoryIds != null) {
+                final var inClause = builder.in(root.get("categoryId"));
+                categoryIds.forEach(inClause::value);
+                criteria.add(inClause);
+            }
+
+            return builder.and(criteria.toArray(new Predicate[0]));
+        };
     }
 
 }

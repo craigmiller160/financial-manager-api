@@ -35,6 +35,8 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction,Long>, JpaSpecificationExecutor<Transaction> {
 
+    // TODO delete old query methods
+
     @Query("""
     SELECT t
     FROM Transaction t
