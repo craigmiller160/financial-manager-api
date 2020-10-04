@@ -25,7 +25,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public class TransactionControllerIntegrationTest {
+public class TransactionControllerIntegrationTest extends AbstractControllerIntegrationTest {
 
     @Test
     public void test_searchTransactions_allParams() {
