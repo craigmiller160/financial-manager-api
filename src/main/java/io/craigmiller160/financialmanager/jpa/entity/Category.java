@@ -18,7 +18,10 @@
 
 package io.craigmiller160.financialmanager.jpa.entity;
 
+import io.craigmiller160.financialmanager.dto.CategoryDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,6 +31,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "categories")
 @SuppressWarnings("JpaDataSourceORMInspection")
@@ -37,4 +42,9 @@ public class Category {
     private Long id;
     @NotNull
     private String name;
+
+    public CategoryDto toDto() {
+        return new CategoryDto(id, name);
+    }
+
 }
