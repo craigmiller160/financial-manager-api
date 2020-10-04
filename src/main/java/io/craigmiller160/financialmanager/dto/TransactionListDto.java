@@ -18,6 +18,8 @@
 
 package io.craigmiller160.financialmanager.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-public record TransactionListDto(List<TransactionDto> transactions) { }
+public record TransactionListDto(@JsonProperty("transactions") List<TransactionDto> transactions) { }

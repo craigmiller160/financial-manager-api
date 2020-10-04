@@ -18,17 +18,17 @@
 
 package io.craigmiller160.financialmanager.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.craigmiller160.financialmanager.jpa.entity.Transaction;
 
 import java.time.LocalDate;
 
 public record TransactionDto(
-        Long id,
-        String description,
-        Double amount,
-        LocalDate postDate,
-        String userId,
-        CategoryDto category
+        @JsonProperty("id") Long id,
+        @JsonProperty("description") String description,
+        @JsonProperty("amount") Double amount,
+        @JsonProperty("postDate") LocalDate postDate,
+        @JsonProperty("category") CategoryDto category
 ) implements DtoToEntity<Transaction> {
     @Override
     public Transaction toEntity() {
@@ -37,7 +37,6 @@ public record TransactionDto(
         transaction.setDescription(description);
         transaction.setAmount(amount);
         transaction.setPostDate(postDate);
-        transaction.setUserId(userId);
         if (category != null) {
             transaction.setCategoryId(category.id());
         }

@@ -18,6 +18,5 @@
 
 package io.craigmiller160.financialmanager.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-public record CountDto(@JsonProperty("count") int count) { }
+public record SearchRequestDto() {
+}
