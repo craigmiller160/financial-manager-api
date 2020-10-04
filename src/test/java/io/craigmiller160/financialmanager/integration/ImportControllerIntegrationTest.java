@@ -32,6 +32,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.nio.charset.StandardCharsets;
@@ -56,15 +57,6 @@ public class ImportControllerIntegrationTest extends AbstractControllerIntegrati
     @BeforeEach
     public void setup() {
         transactionRepo.deleteAll();
-    }
-
-    private String loadCsv(final String fileName) {
-        return Option.of(getClass().getClassLoader().getResourceAsStream(String.format("csv/%s", fileName)))
-                .flatMap(stream ->
-                        Try.of(() -> IOUtils.toString(stream, StandardCharsets.UTF_8))
-                                .toOption()
-                )
-                .getOrElseThrow(() -> new RuntimeException("Could not load CSV file"));
     }
 
     private void validateTransaction(final Transaction txn, final String description, final double amount, final LocalDate postDate) {
@@ -111,9 +103,9 @@ public class ImportControllerIntegrationTest extends AbstractControllerIntegrati
             apiConfig.response(resConfig -> {
                 resConfig.setStatus(400);
             });
-        }).convert(ErrorResponse.class);
+        });
 
-        validateBadRequest(result, "Error parsing CSV: java.lang.NumberFormatException", "/import/CHASE", HttpMethod.POST);
+        validateError(result, HttpStatus.BAD_REQUEST, "Error parsing CSV: java.lang.NumberFormatException");
         assertEquals(0, transactionRepo.count());
     }
 
@@ -150,9 +142,9 @@ public class ImportControllerIntegrationTest extends AbstractControllerIntegrati
             apiConfig.response(resConfig -> {
                 resConfig.setStatus(400);
             });
-        }).convert(ErrorResponse.class);
+        });
 
-        validateBadRequest(result, "Error parsing CSV: java.lang.NumberFormatException", "/import/DISCOVER", HttpMethod.POST);
+        validateError(result, HttpStatus.BAD_REQUEST, "Error parsing CSV: java.lang.NumberFormatException");
         assertEquals(0, transactionRepo.count());
     }
 
@@ -168,9 +160,9 @@ public class ImportControllerIntegrationTest extends AbstractControllerIntegrati
             apiConfig.response(resConfig -> {
                 resConfig.setStatus(400);
             });
-        }).convert(ErrorResponse.class);
+        });
 
-        validateBadRequest(result, "Failed to convert value of type", "/import/ABC", HttpMethod.POST);
+        validateError(result, HttpStatus.BAD_REQUEST, "Failed to convert value of type");
     }
 
 }

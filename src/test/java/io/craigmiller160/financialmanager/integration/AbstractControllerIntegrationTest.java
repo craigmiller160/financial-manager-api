@@ -22,17 +22,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWKSet;
 import io.craigmiller160.apitestprocessor.ApiTestProcessor;
 import io.craigmiller160.apitestprocessor.config.AuthType;
+import io.craigmiller160.apitestprocessor.result.ApiResult;
 import io.craigmiller160.financialmanager.testutils.JwtUtils;
 import io.craigmiller160.oauth2.config.OAuthConfig;
 import io.craigmiller160.webutils.dto.ErrorResponse;
+import io.vavr.control.Option;
+import io.vavr.control.Try;
+import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -88,15 +94,24 @@ public class AbstractControllerIntegrationTest {
         });
     }
 
-    protected void validateBadRequest(final ErrorResponse error, final String message, final String path, final HttpMethod method) {
-        assertThat(error, allOf(
+    protected void validateError(final ApiResult result, final HttpStatus status, final String message) {
+        assertThat(result.convert(ErrorResponse.class), allOf(
                 hasProperty("timestamp", notNullValue()),
-                hasProperty("status", equalTo(400)),
-                hasProperty("error", equalTo("Bad Request")),
+                hasProperty("status", equalTo(status.value())),
+                hasProperty("error", equalTo(status.getReasonPhrase())),
                 hasProperty("message", containsString(message)),
-                hasProperty("path", equalTo(path)),
-                hasProperty("method", equalTo(method))
+                hasProperty("path", equalTo(result.getRequestConfig().getPath())),
+                hasProperty("method", equalTo(result.getRequestConfig().getMethod().toString()))
         ));
+    }
+
+    protected String loadCsv(final String fileName) {
+        return Option.of(getClass().getClassLoader().getResourceAsStream(String.format("csv/%s", fileName)))
+                .flatMap(stream ->
+                        Try.of(() -> IOUtils.toString(stream, StandardCharsets.UTF_8))
+                                .toOption()
+                )
+                .getOrElseThrow(() -> new RuntimeException("Could not load CSV file"));
     }
 
 }
