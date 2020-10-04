@@ -18,5 +18,12 @@
 
 package io.craigmiller160.financialmanager.dto;
 
-public record SearchRequestDto() {
-}
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.LocalDate;
+
+public record SearchRequestDto(
+        @JsonProperty("startDate") LocalDate startDate,
+        @JsonProperty("endDate") LocalDate endDate,
+        @JsonProperty("category") CategoryDto category
+) { }
