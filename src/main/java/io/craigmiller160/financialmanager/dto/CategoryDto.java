@@ -24,7 +24,7 @@ import io.craigmiller160.financialmanager.jpa.entity.Category;
 public record CategoryDto (
         @JsonProperty("id") Long id,
         @JsonProperty("name") String name
-) implements Dto<Category> {
+) implements DtoToEntity<Category> {
 
     @Override
     public Category toEntity() {

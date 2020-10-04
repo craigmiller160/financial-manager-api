@@ -37,7 +37,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "transactions")
 @SuppressWarnings("JpaDataSourceORMInspection")
-public class Transaction implements JpaEntity<TransactionDto> {
+public class Transaction implements EntityToDto<TransactionDto> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

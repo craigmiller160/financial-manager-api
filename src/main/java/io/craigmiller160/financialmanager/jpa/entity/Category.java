@@ -36,7 +36,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "categories")
 @SuppressWarnings("JpaDataSourceORMInspection")
-public class Category implements JpaEntity<CategoryDto> {
+public class Category implements EntityToDto<CategoryDto> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

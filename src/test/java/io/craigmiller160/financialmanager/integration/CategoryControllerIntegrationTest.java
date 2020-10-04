@@ -71,7 +71,7 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
 
     @Test
     public void test_createCategory() {
-        final var payload = new CategoryDto(0, "NewCategory");
+        final var payload = new CategoryDto(0L, "NewCategory");
         var result = apiTestProcessor.call(apiConfig -> {
             apiConfig.request(requestConfig -> {
                 requestConfig.setMethod(HttpMethod.POST);
@@ -88,7 +88,7 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
 
     @Test
     public void test_updateCategory() {
-        final var payload = new CategoryDto(0, "UpdatedCategory");
+        final var payload = new CategoryDto(0L, "UpdatedCategory");
         var result = apiTestProcessor.call(apiConfig -> {
             apiConfig.request(requestConfig -> {
                 requestConfig.setMethod(HttpMethod.PUT);
@@ -105,7 +105,7 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
 
     @Test
     public void test_updateCategory_notFound() {
-        final var payload = new CategoryDto(0, "UpdatedCategory");
+        final var payload = new CategoryDto(0L, "UpdatedCategory");
         var result = apiTestProcessor.call(apiConfig -> {
             apiConfig.request(requestConfig -> {
                 requestConfig.setMethod(HttpMethod.PUT);

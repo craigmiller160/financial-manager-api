@@ -29,7 +29,7 @@ public record TransactionDto(
         LocalDate postDate,
         String userId,
         CategoryDto category
-) implements Dto<Transaction> {
+) implements DtoToEntity<Transaction> {
     @Override
     public Transaction toEntity() {
         final Transaction transaction = new Transaction();

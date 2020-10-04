@@ -16,10 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.jpa.entity;
+package io.craigmiller160.financialmanager.dto;
 
-public interface JpaEntity<D> {
+public interface DtoToEntity<E> {
 
-    D toDto();
+    E toEntity();
 
 }
