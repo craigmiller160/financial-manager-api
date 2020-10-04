@@ -62,29 +62,10 @@ public class TransactionService {
         return transactionRepo.save(transaction).toDto();
     }
 
-//    public SearchResponseDto searchTransactions2(final SearchRequestDto searchRequest) {
-//        var pageRequest = PageRequest.of(
-//                searchRequest.getOrDefaultPageNumber(),
-//                paginationConfig.getPageSize()
-//        );
-//
-//        final var pageResults = transactionRepo.searchForTransactions(
-//                searchRequest.getOrDefaultStartDate(),
-//                searchRequest.getOrDefaultEndDate(),
-//                searchRequest.getOrDefaultCategoryIds(),
-//                pageRequest
-//        );
-//
-//        final var transactions = pageResults.get()
-//                .map(Transaction::toDto)
-//                .collect(Collectors.toList());
-//        return new SearchResponseDto(pageResults.getTotalPages(), searchRequest.getOrDefaultPageNumber(), transactions);
-//    }
-
     public SearchResponseDto searchTransactions(final SearchRequestDto searchRequest) {
         final var specification = searchRequest.toJpaSpecification();
         final var pageRequest = PageRequest.of(
-                searchRequest.getOrDefaultPageNumber(),
+                searchRequest.pageNumber(),
                 paginationConfig.getPageSize(),
                 Sort.by("postDate").descending()
                 .and(Sort.by("description").ascending())
@@ -95,7 +76,7 @@ public class TransactionService {
         final var transactions = pageResults.get()
                 .map(Transaction::toDto)
                 .collect(Collectors.toList());
-        return new SearchResponseDto(pageResults.getTotalPages(), searchRequest.getOrDefaultPageNumber(), transactions);
+        return new SearchResponseDto(pageResults.getTotalPages(), searchRequest.pageNumber(), transactions);
     }
 
 }

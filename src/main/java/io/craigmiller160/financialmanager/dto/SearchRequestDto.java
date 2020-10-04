@@ -31,15 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record SearchRequestDto(
-        @JsonProperty("pageNumber") Integer pageNumber,
+        @JsonProperty("pageNumber") int pageNumber,
         @JsonProperty("startDate") LocalDate startDate,
         @JsonProperty("endDate") LocalDate endDate,
-        @JsonProperty("categoryIds") List<Long> categoryIds
+        @JsonProperty("categoryIds") List<Long> categoryIds,
+        @JsonProperty("noCategory") boolean noCategory
 ) {
-
-    public int getOrDefaultPageNumber() {
-        return pageNumber != null ? pageNumber : 0;
-    }
 
     public Specification<Transaction> toJpaSpecification() {
         return (final Root<Transaction> root, final CriteriaQuery<?> query, final CriteriaBuilder builder) -> {
@@ -52,7 +49,10 @@ public record SearchRequestDto(
                 criteria.add(builder.lessThanOrEqualTo(root.get("postDate"), endDate));
             }
 
-            if (categoryIds != null && categoryIds.size() > 0) {
+            if (noCategory) {
+                criteria.add(builder.isNull(root.get("categoryId")));
+            }
+            else if (categoryIds != null && categoryIds.size() > 0) {
                 final var inClause = builder.in(root.get("categoryId"));
                 categoryIds.forEach(inClause::value);
                 criteria.add(inClause);

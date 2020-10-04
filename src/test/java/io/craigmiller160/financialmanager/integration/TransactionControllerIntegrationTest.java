@@ -76,12 +76,13 @@ public class TransactionControllerIntegrationTest extends AbstractControllerInte
     }
 
     @Test
-    public void test_searchTransactions_allParams() {
+    public void test_searchTransactions_datesAndCategories() {
         final var searchRequest = new SearchRequestDto(
                 0,
                 LocalDate.now(),
                 LocalDate.now().plus(4, ChronoUnit.DAYS),
-                List.of(category1.getId())
+                List.of(category1.getId()),
+                false
         );
         final var result = apiTestProcessor.call(apiConfig -> {
             apiConfig.request(reqConfig -> {
@@ -100,7 +101,7 @@ public class TransactionControllerIntegrationTest extends AbstractControllerInte
 
     @Test
     public void test_searchTransactions_noParams() {
-        final var searchRequest = new SearchRequestDto(0, null, null, null);
+        final var searchRequest = new SearchRequestDto(0, null, null, null, false);
         final var result = apiTestProcessor.call(apiConfig -> {
             apiConfig.request(reqConfig -> {
                 reqConfig.setMethod(HttpMethod.POST);
@@ -118,12 +119,24 @@ public class TransactionControllerIntegrationTest extends AbstractControllerInte
 
     @Test
     public void test_searchTransactions_allWithoutCategory() {
-        throw new RuntimeException();
+        final var searchRequest = new SearchRequestDto(0, null, null, null, true);
+        final var result = apiTestProcessor.call(apiConfig -> {
+            apiConfig.request(reqConfig -> {
+                reqConfig.setMethod(HttpMethod.POST);
+                reqConfig.setPath("/transactions/search");
+                reqConfig.setBody(new Json(searchRequest));
+            });
+        }).convert(SearchResponseDto.class);
+
+        assertEquals(1, result.totalPages());
+        assertEquals(0, result.currentPage());
+        assertEquals(1, result.transactions().size());
+        assertEquals(txn3.toDto(), result.transactions().get(0));
     }
 
     @Test
     public void test_searchTransactions_onlyStartDate() {
-        final var searchRequest = new SearchRequestDto(0, LocalDate.now().plus(3, ChronoUnit.DAYS), null, null);
+        final var searchRequest = new SearchRequestDto(0, LocalDate.now().plus(3, ChronoUnit.DAYS), null, null, false);
         final var result = apiTestProcessor.call(apiConfig -> {
             apiConfig.request(reqConfig -> {
                 reqConfig.setMethod(HttpMethod.POST);
@@ -141,7 +154,7 @@ public class TransactionControllerIntegrationTest extends AbstractControllerInte
 
     @Test
     public void test_searchTransactions_onlyEndDate() {
-        final var searchRequest = new SearchRequestDto(0, null, LocalDate.now().plus(2, ChronoUnit.DAYS), null);
+        final var searchRequest = new SearchRequestDto(0, null, LocalDate.now().plus(2, ChronoUnit.DAYS), null, false);
         final var result = apiTestProcessor.call(apiConfig -> {
             apiConfig.request(reqConfig -> {
                 reqConfig.setMethod(HttpMethod.POST);
@@ -159,7 +172,7 @@ public class TransactionControllerIntegrationTest extends AbstractControllerInte
 
     @Test
     public void test_searchTransactions_onlyCategories() {
-        final var searchRequest = new SearchRequestDto(1, null, null, List.of(category1.getId()));
+        final var searchRequest = new SearchRequestDto(0, null, null, List.of(category1.getId()), false);
         final var result = apiTestProcessor.call(apiConfig -> {
             apiConfig.request(reqConfig -> {
                 reqConfig.setMethod(HttpMethod.POST);
@@ -169,9 +182,10 @@ public class TransactionControllerIntegrationTest extends AbstractControllerInte
         }).convert(SearchResponseDto.class);
 
         assertEquals(2, result.totalPages());
-        assertEquals(1, result.currentPage());
-        assertEquals(1, result.transactions().size());
-        assertEquals(txn1.toDto(), result.transactions().get(0));
+        assertEquals(0, result.currentPage());
+        assertEquals(2, result.transactions().size());
+        assertEquals(txn4.toDto(), result.transactions().get(0));
+        assertEquals(txn2.toDto(), result.transactions().get(1));
     }
 
     @Test
