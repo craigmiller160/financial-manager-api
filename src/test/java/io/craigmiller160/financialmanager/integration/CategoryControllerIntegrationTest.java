@@ -38,7 +38,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
@@ -47,6 +46,7 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
 
     @Autowired
     private CategoryRepository categoryRepo;
+    @Autowired
     private TransactionRepository transactionRepo;
 
     private Category category1;
@@ -74,6 +74,7 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
 
     @AfterEach
     public void cleanup() {
+        transactionRepo.deleteAll();
         categoryRepo.deleteAll();
     }
 

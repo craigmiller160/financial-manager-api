@@ -20,7 +20,7 @@ package io.craigmiller160.financialmanager.jpa.repository;
 
 import io.craigmiller160.financialmanager.jpa.entity.Transaction;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -46,7 +46,7 @@ public interface TransactionRepository extends JpaRepository<Transaction,Long> {
             @Param("startDate") final LocalDate startDate,
             @Param("endDate") final LocalDate endDate,
             @Param("categoryIds") final List<Long> categoryIds, // TODO look for ways to not have to set this as null
-            final PageRequest pageRequest
+            final Pageable pageRequest
     );
 
     @Transactional
