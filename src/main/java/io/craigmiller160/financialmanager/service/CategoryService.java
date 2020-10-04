@@ -32,4 +32,9 @@ public class CategoryService {
         return null;
     }
 
+    public CategoryDto getCategory(final long id) {
+        // TODO finish this
+        return null;
+    }
+
 }

@@ -20,9 +20,14 @@ package io.craigmiller160.financialmanager.controller;
 
 import io.craigmiller160.financialmanager.dto.CategoryDto;
 import io.craigmiller160.financialmanager.dto.CategoryListDto;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/categories")
@@ -30,14 +35,32 @@ public class CategoryController {
 
     @GetMapping
     public CategoryListDto getAllCategories() {
-        final var category1 = new CategoryDto(1L, "First");
-        final var category2 = new CategoryDto(2L, "Second");
-        return new CategoryListDto(List.of(category1, category2));
+        // TODO finish this
+        return null;
     }
 
     @PostMapping
     public CategoryDto createCategory(@RequestBody final CategoryDto category) {
-        return new CategoryDto(1L, category.name());
+        // TODO finish this
+        return null;
+    }
+
+    @PutMapping("/{id}")
+    public CategoryDto updateCategory(@PathVariable("id") final long id, @RequestBody CategoryDto category) {
+        // TODO finish this
+        return null;
+    }
+
+    @DeleteMapping("/{id}")
+    public CategoryDto deleteCategory(@PathVariable("id") final long id) {
+        // TODO finish this
+        return null;
+    }
+
+    @GetMapping("/{id}")
+    public CategoryDto getCategory(@PathVariable("id") final long id) {
+        // TODO finish this
+        return null;
     }
 
 }
