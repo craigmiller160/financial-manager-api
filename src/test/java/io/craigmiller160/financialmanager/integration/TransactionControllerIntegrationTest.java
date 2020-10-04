@@ -115,7 +115,7 @@ public class TransactionControllerIntegrationTest extends AbstractControllerInte
     }
 
     @Test
-    public void test_searchTransactions_withoutCategory() {
+    public void test_searchTransactions_allWithoutCategory() {
         throw new RuntimeException();
     }
 
