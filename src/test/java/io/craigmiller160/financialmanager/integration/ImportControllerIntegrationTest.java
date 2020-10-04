@@ -42,7 +42,6 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-
 @ExtendWith(SpringExtension.class)
 public class ImportControllerIntegrationTest extends AbstractControllerIntegrationTest {
 
