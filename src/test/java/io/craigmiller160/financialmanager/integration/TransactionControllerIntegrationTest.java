@@ -18,14 +18,48 @@
 
 package io.craigmiller160.financialmanager.integration;
 
+import io.craigmiller160.financialmanager.jpa.entity.Category;
+import io.craigmiller160.financialmanager.jpa.entity.Transaction;
+import io.craigmiller160.financialmanager.jpa.repository.CategoryRepository;
+import io.craigmiller160.financialmanager.jpa.repository.TransactionRepository;
+import io.craigmiller160.financialmanager.testutils.TestData;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 public class TransactionControllerIntegrationTest extends AbstractControllerIntegrationTest {
+
+    @Autowired
+    private CategoryRepository categoryRepo;
+    @Autowired
+    private TransactionRepository transactionRepo;
+
+    private Category category1;
+    private Transaction txn1;
+    private Transaction txn2;
+    private Transaction txn3;
+    private Transaction txn4;
+
+    @BeforeEach
+    public void setup() {
+        category1 = categoryRepo.save(new Category(0L, "Category"));
+        txn1 = transactionRepo.save(TestData.createTransaction(1L, category1.getId()));
+        txn2 = transactionRepo.save(TestData.createTransaction(2L, null));
+        txn3 = transactionRepo.save(TestData.createTransaction(3L, category1.getId()));
+        txn4 = transactionRepo.save(TestData.createTransaction(4L, null));
+    }
+
+    @AfterEach
+    public void cleanup() {
+        transactionRepo.deleteAll();
+        categoryRepo.deleteAll();
+    }
 
     @Test
     public void test_searchTransactions_allParams() {

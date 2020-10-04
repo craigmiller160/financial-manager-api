@@ -25,6 +25,7 @@ import io.craigmiller160.financialmanager.jpa.entity.Category;
 import io.craigmiller160.financialmanager.jpa.entity.Transaction;
 import io.craigmiller160.financialmanager.jpa.repository.CategoryRepository;
 import io.craigmiller160.financialmanager.jpa.repository.TransactionRepository;
+import io.craigmiller160.financialmanager.testutils.TestData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,24 +53,14 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
     private Category category1;
     private Category category2;
     private Transaction txn1;
-    private Transaction txn2;
-
-    private Transaction createTransaction(final long number, final long categoryId) {
-        final Transaction txn = new Transaction();
-        txn.setPostDate(LocalDate.now());
-        txn.setDescription(String.format("Description_%d", number));
-        txn.setUserId(String.format("userId_%d", number));
-        txn.setAmount(20.0 + number);
-        txn.setCategoryId(categoryId);
-        return txn;
-    }
+    private Transaction txn2;}
 
     @BeforeEach
     public void setup() {
         category1 = categoryRepo.save(new Category(0L, "First"));
         category2 = categoryRepo.save(new Category(0L, "Second"));
-        txn1 = transactionRepo.save(createTransaction(1L, category1.getId()));
-        txn2 = transactionRepo.save(createTransaction(2L, category2.getId()));
+        txn1 = transactionRepo.save(TestData.createTransaction(1L, category1.getId()));
+        txn2 = transactionRepo.save(TestData.createTransaction(2L, category2.getId()));
     }
 
     @AfterEach
