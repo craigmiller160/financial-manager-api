@@ -39,7 +39,7 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @GetMapping("/search")
-    public SearchResponseDto transactionSearch(@RequestBody SearchRequestDto searchRequest) {
+    public SearchResponseDto searchTransactions(@RequestBody SearchRequestDto searchRequest) {
         // TODO finish this
         return null;
     }
