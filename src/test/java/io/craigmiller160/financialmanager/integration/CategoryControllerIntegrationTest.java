@@ -22,7 +22,9 @@ import io.craigmiller160.apitestprocessor.body.Json;
 import io.craigmiller160.financialmanager.dto.CategoryDto;
 import io.craigmiller160.financialmanager.dto.CategoryListDto;
 import io.craigmiller160.financialmanager.jpa.entity.Category;
+import io.craigmiller160.financialmanager.jpa.entity.Transaction;
 import io.craigmiller160.financialmanager.jpa.repository.CategoryRepository;
+import io.craigmiller160.financialmanager.jpa.repository.TransactionRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +35,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -41,14 +47,29 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
 
     @Autowired
     private CategoryRepository categoryRepo;
+    private TransactionRepository transactionRepo;
 
     private Category category1;
     private Category category2;
+    private Transaction txn1;
+    private Transaction txn2;
+
+    private Transaction createTransaction(final long number, final long categoryId) {
+        final Transaction txn = new Transaction();
+        txn.setPostDate(LocalDate.now());
+        txn.setDescription(String.format("Description_%d", number));
+        txn.setUserId(String.format("userId_%d", number));
+        txn.setAmount(20.0 + number);
+        txn.setCategoryId(categoryId);
+        return txn;
+    }
 
     @BeforeEach
     public void setup() {
         category1 = categoryRepo.save(new Category(0L, "First"));
         category2 = categoryRepo.save(new Category(0L, "Second"));
+        txn1 = transactionRepo.save(createTransaction(1L, category1.getId()));
+        txn2 = transactionRepo.save(createTransaction(2L, category2.getId()));
     }
 
     @AfterEach
@@ -133,6 +154,12 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
         final var categories = categoryRepo.findAll();
         assertEquals(1, categories.size());
         assertEquals(category2, categories.get(0));
+
+        final var txn1Db = transactionRepo.findById(txn1.getId()).get();
+        assertNull(txn1Db.getCategoryId());
+
+        final var txn2Db = transactionRepo.findById(txn2.getId()).get();
+        assertEquals(category2.getId(), txn2Db.getCategoryId());
     }
 
     @Test

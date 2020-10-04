@@ -4,6 +4,7 @@ import io.craigmiller160.financialmanager.dto.CategoryDto;
 import io.craigmiller160.financialmanager.dto.CategoryListDto;
 import io.craigmiller160.financialmanager.jpa.entity.Category;
 import io.craigmiller160.financialmanager.jpa.repository.CategoryRepository;
+import io.craigmiller160.financialmanager.jpa.repository.TransactionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class CategoryService {
 
     private final CategoryRepository categoryRepo;
+    private final TransactionRepository transactionRepo;
 
     @Transactional
     public CategoryListDto getAllCategories() {
@@ -48,6 +50,7 @@ public class CategoryService {
         final var category = categoryRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("No category with id %d", id)))
                 .toDto();
+        transactionRepo.removeCategoryFromTransactions(id);
         categoryRepo.deleteById(id);
         return category;
     }

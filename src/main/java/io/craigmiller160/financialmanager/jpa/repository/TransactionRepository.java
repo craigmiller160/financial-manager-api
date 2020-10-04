@@ -47,4 +47,11 @@ public interface TransactionRepository extends JpaRepository<Transaction,Long> {
             final PageRequest pageRequest
     );
 
+    @Query("""
+    UPDATE Transaction t
+    SET t.categoryId = null
+    WHERE t.categoryId = :categoryId
+    """)
+    int removeCategoryFromTransactions(@Param("categoryId") final long categoryId);
+
 }

@@ -58,7 +58,7 @@ public class Transaction implements EntityToDto<TransactionDto> {
     @Override
     public TransactionDto toDto() {
         final var categoryDto = category != null ? category.toDto() : null;
-        return new TransactionDto(id, description, amount, postDate, userId, categoryDto);
+        return new TransactionDto(id, description, amount, postDate, categoryDto);
     }
 
 }

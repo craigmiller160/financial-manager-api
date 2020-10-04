@@ -7,3 +7,7 @@ spring:
 server:
   ssl:
     use-ssl: false
+
+financial-manager:
+  pagination:
+    page-size: 2

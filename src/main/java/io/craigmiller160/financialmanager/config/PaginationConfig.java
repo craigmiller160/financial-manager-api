@@ -28,7 +28,7 @@ public class PaginationConfig {
 
     private final int pageSize;
 
-    public PaginationConfig(@Value("financial-manager.pagination.page-size") final int pageSize) {
+    public PaginationConfig(@Value("${financial-manager.pagination.page-size}") final int pageSize) {
         this.pageSize = pageSize;
     }
 
