@@ -30,6 +30,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -104,17 +105,49 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
 
     @Test
     public void test_updateCategory_notFound() {
-        throw new RuntimeException();
+        final var payload = new CategoryDto(0, "UpdatedCategory");
+        var result = apiTestProcessor.call(apiConfig -> {
+            apiConfig.request(requestConfig -> {
+                requestConfig.setMethod(HttpMethod.PUT);
+                requestConfig.setPath(String.format("/categories/%d", category2.getId() + 1));
+                requestConfig.setBody(new Json(payload));
+            });
+            apiConfig.response(responseConfig -> {
+                responseConfig.setStatus(400);
+            });
+        });
+
+        validateError(result, HttpStatus.BAD_REQUEST, "No category with id");
     }
 
     @Test
     public void test_deleteCategory() {
-        throw new RuntimeException();
+        var result = apiTestProcessor.call(apiConfig -> {
+            apiConfig.request(requestConfig -> {
+                requestConfig.setMethod(HttpMethod.DELETE);
+                requestConfig.setPath(String.format("/categories/%d", category1.getId()));
+            });
+        }).convert(CategoryDto.class);
+
+        assertEquals(category1.toDto(), result);
+        final var categories = categoryRepo.findAll();
+        assertEquals(1, categories.size());
+        assertEquals(category2, categories.get(0));
     }
 
     @Test
     public void test_deleteCategory_notFound() {
-        throw new RuntimeException();
+        var result = apiTestProcessor.call(apiConfig -> {
+            apiConfig.request(requestConfig -> {
+                requestConfig.setMethod(HttpMethod.DELETE);
+                requestConfig.setPath(String.format("/categories/%d", category2.getId() + 1));
+            });
+            apiConfig.response(responseConfig -> {
+                responseConfig.setStatus(400);
+            });
+        });
+
+        validateError(result, HttpStatus.BAD_REQUEST, "No category with id");
     }
 
     @Test
@@ -130,7 +163,16 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
 
     @Test
     public void test_getCategory_notFound() {
-        throw new RuntimeException();
+        var result = apiTestProcessor.call(apiConfig -> {
+            apiConfig.request(requestConfig -> {
+                requestConfig.setPath(String.format("/categories/%d", category2.getId() + 1));
+            });
+            apiConfig.response(responseConfig -> {
+                responseConfig.setStatus(400);
+            });
+        });
+
+        validateError(result, HttpStatus.BAD_REQUEST, "No category with id");
     }
 
 }
