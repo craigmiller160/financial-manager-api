@@ -19,7 +19,7 @@ public class CategoryService {
 
     @Transactional
     public CategoryListDto getAllCategories() {
-        final var categories = categoryRepo.findAll()
+        final var categories = categoryRepo.findAllByOrderByName()
                 .stream()
                 .map(Category::toDto)
                 .collect(Collectors.toList());

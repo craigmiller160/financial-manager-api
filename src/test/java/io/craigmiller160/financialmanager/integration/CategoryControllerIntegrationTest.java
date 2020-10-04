@@ -21,8 +21,13 @@ package io.craigmiller160.financialmanager.integration;
 import io.craigmiller160.apitestprocessor.body.Json;
 import io.craigmiller160.financialmanager.dto.CategoryDto;
 import io.craigmiller160.financialmanager.dto.CategoryListDto;
+import io.craigmiller160.financialmanager.jpa.entity.Category;
+import io.craigmiller160.financialmanager.jpa.repository.CategoryRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -33,6 +38,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(SpringExtension.class)
 public class CategoryControllerIntegrationTest extends AbstractControllerIntegrationTest {
 
+    @Autowired
+    private CategoryRepository categoryRepo;
+
+    private Category category1;
+    private Category category2;
+
+    @BeforeEach
+    public void setup() {
+        category1 = categoryRepo.save(new Category(0L, "First"));
+        category2 = categoryRepo.save(new Category(0L, "Second"));
+    }
+
+    @AfterEach
+    public void cleanup() {
+        categoryRepo.deleteAll();
+    }
+
     @Test
     public void test_getAllCategories() {
         var result = apiTestProcessor.call(apiConfig -> {
@@ -42,8 +64,8 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
         }).convert(CategoryListDto.class);
 
         assertEquals(2, result.categories().size());
-        assertEquals(new CategoryDto(1L, "First"), result.categories().get(0));
-        assertEquals(new CategoryDto(2L, "Second"), result.categories().get(1));
+        assertEquals(category1.toDto(), result.categories().get(0));
+        assertEquals(category2.toDto(), result.categories().get(1));
     }
 
     @Test
@@ -57,11 +79,19 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
             });
         }).convert(CategoryDto.class);
 
-        assertEquals(new CategoryDto(1L, "NewCategory"), result);
+        assertEquals("NewCategory", result.name());
+
+        final var entity = categoryRepo.findById(result.id()).get();
+        assertEquals(result.toEntity(), entity);
     }
 
     @Test
     public void test_updateCategory() {
+        throw new RuntimeException();
+    }
+
+    @Test
+    public void test_updateCategory_notFound() {
         throw new RuntimeException();
     }
 
@@ -71,7 +101,17 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
     }
 
     @Test
+    public void test_deleteCategory_notFound() {
+        throw new RuntimeException();
+    }
+
+    @Test
     public void test_getCategory() {
+        throw new RuntimeException();
+    }
+
+    @Test
+    public void test_getCategory_notFound() {
         throw new RuntimeException();
     }
 
