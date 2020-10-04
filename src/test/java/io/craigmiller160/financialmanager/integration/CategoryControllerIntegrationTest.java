@@ -60,4 +60,19 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
         assertEquals(new CategoryDto(1L, "NewCategory"), result);
     }
 
+    @Test
+    public void test_updateCategory() {
+        throw new RuntimeException();
+    }
+
+    @Test
+    public void test_deleteCategory() {
+        throw new RuntimeException();
+    }
+
+    @Test
+    public void test_getCategory() {
+        throw new RuntimeException();
+    }
+
 }
