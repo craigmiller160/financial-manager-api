@@ -118,6 +118,11 @@ public class TransactionControllerIntegrationTest extends AbstractControllerInte
     }
 
     @Test
+    public void test_searchTransactions_withoutCategory() {
+        throw new RuntimeException();
+    }
+
+    @Test
     public void test_searchTransactions_onlyStartDate() {
         throw new RuntimeException();
     }
