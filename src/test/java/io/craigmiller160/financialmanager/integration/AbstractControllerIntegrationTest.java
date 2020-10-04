@@ -24,15 +24,23 @@ import io.craigmiller160.apitestprocessor.ApiTestProcessor;
 import io.craigmiller160.apitestprocessor.config.AuthType;
 import io.craigmiller160.financialmanager.testutils.JwtUtils;
 import io.craigmiller160.oauth2.config.OAuthConfig;
+import io.craigmiller160.webutils.dto.ErrorResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpMethod;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.security.KeyPair;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Mockito.when;
 
 @AutoConfigureMockMvc
@@ -78,6 +86,17 @@ public class AbstractControllerIntegrationTest {
                 authConfig.setBearerToken(token);
             });
         });
+    }
+
+    protected void validateBadRequest(final ErrorResponse error, final String message, final String path, final HttpMethod method) {
+        assertThat(error, allOf(
+                hasProperty("timestamp", notNullValue()),
+                hasProperty("status", equalTo(400)),
+                hasProperty("error", equalTo("Bad Request")),
+                hasProperty("message", containsString(message)),
+                hasProperty("path", equalTo(path)),
+                hasProperty("method", equalTo(method))
+        ));
     }
 
 }

@@ -39,7 +39,6 @@ import java.time.LocalDate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.notNullValue;
@@ -99,16 +98,6 @@ public class ImportControllerIntegrationTest extends AbstractControllerIntegrati
         validateTransaction(allTxns.get(1), "Different Thing", 86.83, LocalDate.of(2020, 9, 27));
     }
 
-    private void validateBadRequest(final ErrorResponse error, final String message, final String path) {
-        assertThat(error, allOf(
-                hasProperty("timestamp", notNullValue()),
-                hasProperty("status", equalTo(400)),
-                hasProperty("error", equalTo("Bad Request")),
-                hasProperty("message", containsString(message)),
-                hasProperty("path", equalTo(path))
-        ));
-    }
-
     @Test
     public void test_doImport_chase_badCsv() throws Exception {
         final String csv = loadCsv("chase.csv");
@@ -124,7 +113,7 @@ public class ImportControllerIntegrationTest extends AbstractControllerIntegrati
             });
         }).convert(ErrorResponse.class);
 
-        validateBadRequest(result, "Error parsing CSV: java.lang.NumberFormatException", "/import/CHASE");
+        validateBadRequest(result, "Error parsing CSV: java.lang.NumberFormatException", "/import/CHASE", HttpMethod.POST);
         assertEquals(0, transactionRepo.count());
     }
 
@@ -163,7 +152,7 @@ public class ImportControllerIntegrationTest extends AbstractControllerIntegrati
             });
         }).convert(ErrorResponse.class);
 
-        validateBadRequest(result, "Error parsing CSV: java.lang.NumberFormatException", "/import/DISCOVER");
+        validateBadRequest(result, "Error parsing CSV: java.lang.NumberFormatException", "/import/DISCOVER", HttpMethod.POST);
         assertEquals(0, transactionRepo.count());
     }
 
@@ -181,7 +170,7 @@ public class ImportControllerIntegrationTest extends AbstractControllerIntegrati
             });
         }).convert(ErrorResponse.class);
 
-        validateBadRequest(result, "Failed to convert value of type", "/import/ABC");
+        validateBadRequest(result, "Failed to convert value of type", "/import/ABC", HttpMethod.POST);
     }
 
 }
