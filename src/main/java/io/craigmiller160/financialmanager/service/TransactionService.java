@@ -25,11 +25,19 @@ import io.craigmiller160.financialmanager.dto.TransactionDto;
 import io.craigmiller160.financialmanager.jpa.entity.Transaction;
 import io.craigmiller160.financialmanager.jpa.repository.TransactionRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -52,7 +60,7 @@ public class TransactionService {
         return transactionRepo.save(transaction).toDto();
     }
 
-    public SearchResponseDto searchTransactions(final SearchRequestDto searchRequest) {
+    public SearchResponseDto searchTransactions2(final SearchRequestDto searchRequest) {
         var pageRequest = PageRequest.of(
                 searchRequest.getOrDefaultPageNumber(),
                 paginationConfig.getPageSize()
@@ -69,6 +77,25 @@ public class TransactionService {
                 .map(Transaction::toDto)
                 .collect(Collectors.toList());
         return new SearchResponseDto(pageResults.getTotalPages(), searchRequest.getOrDefaultPageNumber(), transactions);
+    }
+
+    public SearchResponseDto searchTransactions(final SearchRequestDto searchRequest) {
+
+
+        // TODO finish this
+        return null;
+    }
+
+    // TODO refactor all of this into SearchRequestDto
+    private Specification<Transaction> spec(final SearchRequestDto searchRequest) {
+        return (final Root<Transaction> root, final CriteriaQuery<?> query, final CriteriaBuilder builder) -> {
+            final var criteria = List.of(
+                    builder.greaterThanOrEqualTo(root.get("postDate"), searchRequest.getOrDefaultStartDate()),
+                    builder.lessThanOrEqualTo(root.get("postDate"), searchRequest.getOrDefaultEndDate())
+            );
+            // TODO add the category ids
+            return builder.and(criteria.toArray(new Predicate[0]));
+        };
     }
 
 }
