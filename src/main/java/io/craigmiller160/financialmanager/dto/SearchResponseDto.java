@@ -22,4 +22,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public record TransactionListDto(@JsonProperty("transactions") List<TransactionDto> transactions) { }
+public record SearchResponseDto(
+        @JsonProperty("totalRecords") int totalRecords,
+        @JsonProperty("currentPage") int currentPage,
+        @JsonProperty("transactions") List<TransactionDto> transactions
+) { }
