@@ -22,10 +22,6 @@ import io.craigmiller160.apitestprocessor.body.Text;
 import io.craigmiller160.financialmanager.jpa.entity.Transaction;
 import io.craigmiller160.financialmanager.jpa.repository.TransactionRepository;
 import io.craigmiller160.financialmanager.testutils.JwtUtils;
-import io.craigmiller160.webutils.dto.ErrorResponse;
-import io.vavr.control.Option;
-import io.vavr.control.Try;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +31,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 
 import static org.hamcrest.MatcherAssert.assertThat;

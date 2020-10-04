@@ -87,7 +87,19 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
 
     @Test
     public void test_updateCategory() {
-        throw new RuntimeException();
+        final var payload = new CategoryDto(0, "UpdatedCategory");
+        var result = apiTestProcessor.call(apiConfig -> {
+            apiConfig.request(requestConfig -> {
+                requestConfig.setMethod(HttpMethod.PUT);
+                requestConfig.setPath(String.format("/categories/%d", category1.getId()));
+                requestConfig.setBody(new Json(payload));
+            });
+        }).convert(CategoryDto.class);
+
+        assertEquals(new CategoryDto(category1.getId(), "UpdatedCategory"), result);
+
+        final var entity = categoryRepo.findById(category1.getId()).get();
+        assertEquals(result.toEntity(), entity);
     }
 
     @Test
@@ -107,7 +119,13 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
 
     @Test
     public void test_getCategory() {
-        throw new RuntimeException();
+        var result = apiTestProcessor.call(apiConfig -> {
+            apiConfig.request(requestConfig -> {
+                requestConfig.setPath(String.format("/categories/%d", category1.getId()));
+            });
+        }).convert(CategoryDto.class);
+
+        assertEquals(category1.toDto(), result);
     }
 
     @Test
