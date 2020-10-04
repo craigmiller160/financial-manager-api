@@ -41,6 +41,7 @@ public interface TransactionRepository extends JpaRepository<Transaction,Long> {
     Page<Transaction> searchForTransactions(
             @Param("startDate") final LocalDate startDate,
             @Param("endDate") final LocalDate endDate,
-            @Param("categoryIds") final List<Long> categoryIds);
+            @Param("categoryIds") final List<Long> categoryIds // TODO look for ways to not have to set this as null
+    );
 
 }

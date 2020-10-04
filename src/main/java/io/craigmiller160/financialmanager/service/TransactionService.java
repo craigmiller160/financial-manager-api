@@ -18,8 +18,35 @@
 
 package io.craigmiller160.financialmanager.service;
 
+import io.craigmiller160.financialmanager.dto.SearchRequestDto;
+import io.craigmiller160.financialmanager.dto.SearchResponseDto;
+import io.craigmiller160.financialmanager.dto.TransactionDto;
+import io.craigmiller160.financialmanager.jpa.repository.TransactionRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+
+@AllArgsConstructor
 @Service
 public class TransactionService {
+
+    private final TransactionRepository transactionRepo;
+    private final SecurityService securityService;
+
+    public TransactionDto updateTransaction(final long id, final TransactionDto payload) {
+        transactionRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("No transactions found for id %d", id)));
+
+        final var transaction = payload.toEntity();
+        transaction.setId(id);
+        transaction.setUserId(securityService.getAuthenticatedUser().getUsername());
+        return transactionRepo.save(transaction).toDto();
+    }
+
+    public SearchResponseDto searchTransactions(final SearchRequestDto searchRequest) {
+        // TODO finish this
+        return null;
+    }
+
 }

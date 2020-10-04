@@ -40,14 +40,12 @@ public class TransactionController {
 
     @GetMapping("/search")
     public SearchResponseDto searchTransactions(@RequestBody SearchRequestDto searchRequest) {
-        // TODO finish this
-        return null;
+        return transactionService.searchTransactions(searchRequest);
     }
 
     @PutMapping("/{id}")
-    public TransactionDto updateTransaction(@PathVariable final Long id, @RequestBody final TransactionDto payload) {
-        // TODO finish this
-        return null;
+    public TransactionDto updateTransaction(@PathVariable final long id, @RequestBody final TransactionDto payload) {
+        return transactionService.updateTransaction(id, payload);
     }
 
 }
