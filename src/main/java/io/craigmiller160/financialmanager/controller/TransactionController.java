@@ -18,8 +18,16 @@
 
 package io.craigmiller160.financialmanager.controller;
 
+import io.craigmiller160.financialmanager.dto.CountDto;
+import io.craigmiller160.financialmanager.dto.TransactionDto;
+import io.craigmiller160.financialmanager.dto.TransactionListDto;
 import io.craigmiller160.financialmanager.service.TransactionService;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +38,28 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
-//    public
+    @GetMapping("/search/count")
+    public CountDto transactionSearchCount() {
+        // TODO finish this
+        return null;
+    }
+
+    @GetMapping("/search")
+    public TransactionListDto transactionSearch() {
+        // TODO finish this
+        return null;
+    }
+
+    @DeleteMapping("/{id}")
+    public TransactionDto deleteTransaction(@PathVariable final Long id) {
+        // TODO finish this
+        return null;
+    }
+
+    @PutMapping("/{id}")
+    public TransactionDto updateTransaction(@PathVariable final Long id, @RequestBody final TransactionDto payload) {
+        // TODO finish this
+        return null;
+    }
 
 }
