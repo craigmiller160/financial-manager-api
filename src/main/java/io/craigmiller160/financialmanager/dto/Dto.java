@@ -18,17 +18,8 @@
 
 package io.craigmiller160.financialmanager.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.craigmiller160.financialmanager.jpa.entity.Category;
+public interface Dto<E> {
 
-public record CategoryDto (
-        @JsonProperty("id") Long id,
-        @JsonProperty("name") String name
-) implements Dto<Category> {
-
-    @Override
-    public Category toEntity() {
-        return new Category(id, name);
-    }
+    E toEntity();
 
 }

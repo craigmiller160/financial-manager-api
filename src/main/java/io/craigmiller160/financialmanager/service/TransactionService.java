@@ -16,19 +16,10 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.dto;
+package io.craigmiller160.financialmanager.service;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.craigmiller160.financialmanager.jpa.entity.Category;
+import org.springframework.stereotype.Service;
 
-public record CategoryDto (
-        @JsonProperty("id") Long id,
-        @JsonProperty("name") String name
-) implements Dto<Category> {
-
-    @Override
-    public Category toEntity() {
-        return new Category(id, name);
-    }
-
+@Service
+public class TransactionService {
 }

@@ -16,36 +16,20 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package io.craigmiller160.financialmanager.jpa.entity;
+package io.craigmiller160.financialmanager.controller;
 
-import io.craigmiller160.financialmanager.dto.CategoryDto;
+import io.craigmiller160.financialmanager.service.TransactionService;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "categories")
-@SuppressWarnings("JpaDataSourceORMInspection")
-public class Category implements JpaEntity<CategoryDto> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @NotNull
-    private String name;
+@RestController
+@RequestMapping("/transactions")
+public class TransactionController {
 
-    @Override
-    public CategoryDto toDto() {
-        return new CategoryDto(id, name);
-    }
+    private final TransactionService transactionService;
+
+
 
 }

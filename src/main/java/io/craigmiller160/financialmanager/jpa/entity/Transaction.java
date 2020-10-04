@@ -18,6 +18,7 @@
 
 package io.craigmiller160.financialmanager.jpa.entity;
 
+import io.craigmiller160.financialmanager.dto.TransactionDto;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -36,7 +37,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "transactions")
 @SuppressWarnings("JpaDataSourceORMInspection")
-public class Transaction {
+public class Transaction implements JpaEntity<TransactionDto> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -53,4 +54,11 @@ public class Transaction {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", insertable = false, updatable = false)
     private Category category;
+
+    @Override
+    public TransactionDto toDto() {
+        final var categoryDto = category != null ? category.toDto() : null;
+        return new TransactionDto(id, description, amount, postDate, userId, categoryDto);
+    }
+
 }
