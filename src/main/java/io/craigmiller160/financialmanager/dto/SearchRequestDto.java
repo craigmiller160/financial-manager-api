@@ -52,7 +52,7 @@ public record SearchRequestDto(
                 criteria.add(builder.lessThanOrEqualTo(root.get("postDate"), endDate));
             }
 
-            if (categoryIds != null) {
+            if (categoryIds != null && categoryIds.size() > 0) {
                 final var inClause = builder.in(root.get("categoryId"));
                 categoryIds.forEach(inClause::value);
                 criteria.add(inClause);
