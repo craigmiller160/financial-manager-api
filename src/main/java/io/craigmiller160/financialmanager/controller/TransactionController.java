@@ -50,12 +50,6 @@ public class TransactionController {
         return null;
     }
 
-    @DeleteMapping("/{id}")
-    public TransactionDto deleteTransaction(@PathVariable final Long id) {
-        // TODO finish this
-        return null;
-    }
-
     @PutMapping("/{id}")
     public TransactionDto updateTransaction(@PathVariable final Long id, @RequestBody final TransactionDto payload) {
         // TODO finish this
