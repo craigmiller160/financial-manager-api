@@ -22,10 +22,12 @@ import io.craigmiller160.financialmanager.jpa.entity.Transaction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -47,11 +49,13 @@ public interface TransactionRepository extends JpaRepository<Transaction,Long> {
             final PageRequest pageRequest
     );
 
+    @Transactional
     @Query("""
     UPDATE Transaction t
     SET t.categoryId = null
     WHERE t.categoryId = :categoryId
     """)
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     int removeCategoryFromTransactions(@Param("categoryId") final long categoryId);
 
 }
