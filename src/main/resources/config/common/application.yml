@@ -19,6 +19,7 @@ oauth2:
   client-name: financial-manager-api
   cookie-name: financial-manager-token
   cookie-max-age-secs: 86400
+  insecure-paths: "/actuator/health"
 
 logging:
   level:
