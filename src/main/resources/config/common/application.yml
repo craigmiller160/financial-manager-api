@@ -1,24 +1,37 @@
 server:
+  servlet:
+    session:
+      cookie:
+        name: FINANCIAL-MANAGE-SESSIONID
+        path: /financial-manage-ui
   ssl:
     key-store-type: PKCS12
     key-store: classpath:keys/financial-manager.p12
     key-store-password: password
     use-ssl: true
+    enabled: true
+    protocol: TLS
+    enabled-protocols: TLSv1.2,TLSv1.3
+    ciphers: ECDHE-ECDSA-AES256-GCM-SHA384,ECDHE-RSA-AES256-GCM-SHA384,ECDHE-ECDSA-CHACHA20-POLY1305,ECDHE-RSA-CHACHA20-POLY1305,ECDHE-ECDSA-AES128-GCM-SHA256,ECDHE-RSA-AES128-GCM-SHA256,ECDHE-ECDSA-AES256-SHA384,ECDHE-RSA-AES256-SHA384,ECDHE-ECDSA-AES128-SHA256,ECDHE-RSA-AES128-SHA256
 
 spring:
   jpa:
+    properties:
+      hibernate.jdbc.time_zone: UTC
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: none
   datasource:
     url: jdbc:postgresql://${spring.datasource.host}:${spring.datasource.port}/${spring.datasource.dbName}
 
 oauth2:
-  auth-login-base-uri: "/oauth2"
-  auth-code-redirect-uri: "/api/oauth/authcode/code"
-  post-auth-redirect: "/"
+  auth-login-base-uri: "/financial-manage-ui/oauth2"
+  auth-code-redirect-uri: "/financial-manage-ui/api/oauth/authcode/code"
+  post-auth-redirect: "/financial-manage-ui"
   client-name: financial-manager-api
   cookie-name: financial-manager-token
   cookie-max-age-secs: 86400
+  cookie-path: "/financial-manage-ui"
   insecure-paths: "/actuator/health"
 
 logging:
