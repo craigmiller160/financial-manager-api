@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: financial-manager-api
-          image: localhost:32000/financial-manager-api:1.0.0-SNAPSHOT
+          image: localhost:32000/financial-manager-api:1.0.0
           envFrom:
             - configMapRef:
                 name: financial-manager-api-configmap
