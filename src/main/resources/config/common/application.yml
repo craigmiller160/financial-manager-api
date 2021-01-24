@@ -3,7 +3,7 @@ server:
     session:
       cookie:
         name: FINANCIAL-MANAGE-SESSIONID
-        path: /financial-manage-ui
+        path: /financial-manager
   ssl:
     key-store-type: PKCS12
     key-store: classpath:keys/financial-manager.p12
@@ -25,13 +25,13 @@ spring:
     url: jdbc:postgresql://${spring.datasource.host}:${spring.datasource.port}/${spring.datasource.dbName}
 
 oauth2:
-  auth-login-base-uri: "/financial-manage-ui/oauth2"
-  auth-code-redirect-uri: "/financial-manage-ui/api/oauth/authcode/code"
-  post-auth-redirect: "/financial-manage-ui"
+  auth-login-base-uri: "/financial-manager/oauth2"
+  auth-code-redirect-uri: "/financial-manager/api/oauth/authcode/code"
+  post-auth-redirect: "/financial-manager"
   client-name: financial-manager-api
   cookie-name: financial-manager-token
   cookie-max-age-secs: 86400
-  cookie-path: "/financial-manage-ui"
+  cookie-path: "/financial-manager"
   insecure-paths: "/actuator/health"
 
 logging:
