@@ -28,12 +28,14 @@ import io.craigmiller160.oauth2.config.OAuthConfig;
 import io.craigmiller160.webutils.dto.ErrorResponse;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
+import org.apache.catalina.filters.RestCsrfPreventionFilter;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
@@ -68,6 +70,9 @@ public class AbstractControllerIntegrationTest {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockBean
+    private FilterRegistrationBean<RestCsrfPreventionFilter> csrfFilter;
 
     private String token;
     protected ApiTestProcessor apiTestProcessor;
