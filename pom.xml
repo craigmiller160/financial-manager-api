@@ -10,7 +10,7 @@
     </parent>
     <groupId>io.craigmiller160</groupId>
     <artifactId>financial-manager-api</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>financial-manager-api</name>
     <description>Financial management application.</description>
 
