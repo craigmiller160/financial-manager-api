@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: financial-manager-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: financial-manager-api
+  template:
+    metadata:
+      labels:
+        app: financial-manager-api
+    spec:
+      containers:
+        - name: financial-manager-api
+          image: localhost:32000/financial-manager-api:1.0.0-SNAPSHOT
+          envFrom:
+            - configMapRef:
+                name: financial-manager-api-configmap
+          env:
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-root-password
+                  key: POSTGRES_ROOT_PASSWORD
+            - name: oauth2.client-secret
+              valueFrom:
+                secretKeyRef:
+                  name: financial-manager-api-client-secret
+                  key: client-secret
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8443
+              scheme: HTTPS
+            initialDelaySeconds: 10
+            periodSeconds: 300
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: financial-manager-api-service
+spec:
+  type: ClusterIP
+  selector:
+    app: financial-manager-api
+  ports:
+    - port: 8443
+      targetPort: 8443
+      protocol: TCP

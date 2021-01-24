@@ -1,0 +1,12 @@
+server:
+  port: 8443
+
+spring:
+  datasource:
+    dbName: financial_manager_prod
+
+logging:
+  level:
+    io.craigmiller160.financialmanager: INFO
+    io.craigmiller160.webutils: INFO
+    io.craigmiller160.oauth2: INFO
