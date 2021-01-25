@@ -23,7 +23,8 @@ import io.craigmiller160.financialmanager.jpa.entity.Category;
 
 public record CategoryDto (
         @JsonProperty("id") Long id,
-        @JsonProperty("name") String name
+        @JsonProperty("name") String name,
+        @JsonProperty("description") String description
 ) implements DtoToEntity<Category> {
 
     @Override

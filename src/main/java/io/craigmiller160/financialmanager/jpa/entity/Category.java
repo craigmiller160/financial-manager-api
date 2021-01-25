@@ -42,10 +42,11 @@ public class Category implements EntityToDto<CategoryDto> {
     private Long id;
     @NotNull
     private String name;
+    private String description;
 
     @Override
     public CategoryDto toDto() {
-        return new CategoryDto(id, name);
+        return new CategoryDto(id, name, description);
     }
 
 }
