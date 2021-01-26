@@ -61,7 +61,7 @@ public class TransactionControllerIntegrationTest extends AbstractControllerInte
 
     @BeforeEach
     public void setup() {
-        category1 = categoryRepo.save(new Category(0L, "Category"));
+        category1 = categoryRepo.save(new Category(0L, "Category", ""));
         txn1 = transactionRepo.save(TestData.createTransaction(1L, category1.getId()));
         txn1 = transactionRepo.findById(txn1.getId()).get();
         txn2 = transactionRepo.save(TestData.createTransaction(2L, category1.getId()));

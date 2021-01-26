@@ -29,7 +29,7 @@ public record CategoryDto (
 
     @Override
     public Category toEntity() {
-        return new Category(id, name);
+        return new Category(id, name, description);
     }
 
 }

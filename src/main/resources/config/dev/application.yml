@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    host: localhost
+    host: craigpc
     port: 30001
     username: postgres_root
     password: ${POSTGRES_ROOT_PASSWORD}

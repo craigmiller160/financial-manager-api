@@ -55,8 +55,8 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
 
     @BeforeEach
     public void setup() {
-        category1 = categoryRepo.save(new Category(0L, "First"));
-        category2 = categoryRepo.save(new Category(0L, "Second"));
+        category1 = categoryRepo.save(new Category(0L, "First", ""));
+        category2 = categoryRepo.save(new Category(0L, "Second", ""));
         txn1 = transactionRepo.save(TestData.createTransaction(1L, category1.getId()));
         txn2 = transactionRepo.save(TestData.createTransaction(2L, category2.getId()));
     }
@@ -82,7 +82,7 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
 
     @Test
     public void test_createCategory() {
-        final var payload = new CategoryDto(0L, "NewCategory");
+        final var payload = new CategoryDto(0L, "NewCategory", "");
         var result = apiTestProcessor.call(apiConfig -> {
             apiConfig.request(requestConfig -> {
                 requestConfig.setMethod(HttpMethod.POST);
@@ -116,7 +116,7 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
 
     @Test
     public void test_updateCategory_notFound() {
-        final var payload = new CategoryDto(0L, "UpdatedCategory");
+        final var payload = new CategoryDto(0L, "UpdatedCategory", "");
         var result = apiTestProcessor.call(apiConfig -> {
             apiConfig.request(requestConfig -> {
                 requestConfig.setMethod(HttpMethod.PUT);
