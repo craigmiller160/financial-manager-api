@@ -99,7 +99,7 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
 
     @Test
     public void test_updateCategory() {
-        final var payload = new CategoryDto(0L, "UpdatedCategory");
+        final var payload = new CategoryDto(0L, "UpdatedCategory", "");
         var result = apiTestProcessor.call(apiConfig -> {
             apiConfig.request(requestConfig -> {
                 requestConfig.setMethod(HttpMethod.PUT);
@@ -108,7 +108,7 @@ public class CategoryControllerIntegrationTest extends AbstractControllerIntegra
             });
         }).convert(CategoryDto.class);
 
-        assertEquals(new CategoryDto(category1.getId(), "UpdatedCategory"), result);
+        assertEquals(new CategoryDto(category1.getId(), "UpdatedCategory", ""), result);
 
         final var entity = categoryRepo.findById(category1.getId()).get();
         assertEquals(result.toEntity(), entity);
